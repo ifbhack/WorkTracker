@@ -1,11 +1,14 @@
 # GLOBAL
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 
 # LOCAL
 import functions
 
 # INIT
 app = Flask(__name__)
+app.secret_key = 'admin'
+SESSION_TYPE = 'redis'
+app.config.from_object(__name__)
 
 # FLASK FUNCTIONS
 
@@ -19,19 +22,19 @@ def signIn():
 
 @app.route('/signUp', methods=['GET', 'POST'])
 def signUp():
-  global name
-
   if request.method == 'POST':
-    name = functions.userSignUp()
+    session['name'] = functions.userSignUp()
     return redirect(url_for('homepage'))
   
   return render_template('index-signUp.html')
 
 @app.route('/homepage')
 def homepage():
-  if 'e:' in name:
+  name = session['name']
+
+  if 'e:' in session['name']:
     return f'employee by the name of {name[2:]}'
-  elif 'm:' in name:
+  elif 'm:' in session['name']:
     return f'manager by the name of {name[2:]}' 
   else:
     return 'error'
