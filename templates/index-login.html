@@ -1,19 +1,29 @@
 {% extends "index.html" %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Login{% endblock %}
 
 {% block content %}
     <header>
-        <h1 style="text-align: center; position: relative; top: 80px;">Work Tracker</h1>
+        <h1 style="text-align: center; position: relative; top: 50px;">Work Tracker</h1>
     </header>
 
     <div class="login-section container grid-lg">
-        <h3>Login</h3>
+        <h4>E: for employees | M: for managers</h4>
 
-        <div class="login-form">
-            <button class="btn"><a>Employee Login</a></button>
-            <br /> <br />
-            <button class="btn">Manager Login</button>
+        <div class="login-form form-group">
+            <p style="text-align: left;">Sign in</p>
+            <hr />
+            <form action="" method="post">
+                <label class="form-label" style="text-align: left;" for="name">Name</label>
+                <input class="form-input" type="text" id="name" placeholder="Name">
+
+                <label class="form-label" style="text-align: left;" for="password">Password</label>
+                <input class="form-input" type="password" id="password" placeholder="Password">
+
+                <br />
+
+                <button class="btn" style="text-align: left;">Sign in</button>
+            </form>
         </div>
 
         <span class="helper">Help</span>    <span class="helper">Contact us</span>

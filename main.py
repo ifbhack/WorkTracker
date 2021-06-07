@@ -2,8 +2,12 @@ from flask import Flask, render_template
 
 app = Flask(__name__)
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
 def index():
+  return render_template('index-login.html')
+
+@app.route('/', methods=['GET', 'POST'])
+def login():
   return render_template('index-login.html')
 
 if __name__ == '__main__':
