@@ -12,10 +12,11 @@ def login():
     name, password = request.form['name'], request.form['password']
     
     if name[0].upper() == 'E':
-      print(f'Employee with the name: {name[2:]}')
+      return f'Employee with the name: {name[2:]}'
     elif name[0].upper() == 'M':
-      print(f'Manager with the name: {name[2:]}')
-        
+      return f'Manager with the name: {name[2:]}'
+    else:
+      return 'Login failed due to incorrect login details or due to the username not prefixed with either "e:" or "m:"'
 
   return render_template('index-login.html')
 
