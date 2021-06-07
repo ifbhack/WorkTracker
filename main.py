@@ -23,19 +23,19 @@ def signIn():
 @app.route('/signUp', methods=['GET', 'POST'])
 def signUp():
   if request.method == 'POST':
-    session['name'] = functions.userSignUp()
+    session['name'], session['userIDs'] = functions.userSignUp()
     return redirect(url_for('homepage'))
   
   return render_template('index-signUp.html')
 
 @app.route('/homepage')
 def homepage():
-  name = session['name']
+  name, userID= session['name'], session['userIDs']
 
   if 'e:' in session['name']:
-    return f'employee by the name of {name[2:]}'
+    return f'employee by the name of {name[2:]} with the ID {userID}'
   elif 'm:' in session['name']:
-    return f'manager by the name of {name[2:]}' 
+    return f'manager by the name of {name[2:]} with the ID {userID}' 
   else:
     return 'error'
   
