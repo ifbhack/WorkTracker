@@ -1,0 +1,34 @@
+{% extends "index.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    <header>
+        <h1 style="text-align: center; position: relative; top: 50px;">Work Tracker</h1>
+    </header>
+
+    <div class="login-section container grid-lg">
+        <p>E: for employees | M: for managers</p>
+        <div class="login-form form-group">
+            <p style="text-align: left;">Sign up</p>
+            <hr />
+            <form action="" method="post" style="position: relative;">
+                <label class="form-label" style="text-align: left;" for="name">Name</label>
+                <input class="form-input" type="text" name="name" placeholder="Name" required>
+
+                <label class="form-label" style="text-align: left;" for="password">Password</label>
+                <input class="form-input" type="password" name="password" placeholder="Password" required>
+
+                <br /> 
+                <button class="btn" type="submit" style="text-align: left; float: left;">Sign up</button>
+                <br /> <br />
+            </form>
+            <hr />
+            <p style="text-align: left;">Already have an account?</p>
+            <button class="btn" style="text-align: left; float: left;"><a href="{{ url_for('signIn')}}">Sign in</a></button>
+            <br />
+        </div>
+
+        <span class="helper">Help</span>    <span class="helper">Contact us</span>
+    </div>
+{% endblock %}
