@@ -1,35 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Remove favicon error message -->
-    <link rel="shortcut icon" href="#">
+        <!-- Remove favicon error message -->
+        <link rel="shortcut icon" href="#">
 
-    <!-- Spectre.css import -->
-    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+        <!-- Spectre.css import -->
+        <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+        <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+        <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
 
-    <title>Work Tracker | {% block title %}{% endblock %}</title>
+        <title>Work Tracker | {% block title %}{% endblock %}</title>
 
-    <style>
-        h2{
-            text-align: center
-        }
-    </style>
+        <style>
+            h2{
+                text-align: center
+            }
+        </style>
 
-</head>
-<body>
-    <div id="content">
-        {% block content %}
-        
-        <h2>Welcome: {{ user_details[0] }}</h2>
-        
-        {% endblock %}
-    </div>
+    </head>
 
-</body>
+    <body>
+        <div id="content">
+            {% block content %}
+            
+                <h2>Welcome: {{ user_details[0] }}</h2>
+            
+            {% endblock %}
+        </div>
+    </body>
 </html>

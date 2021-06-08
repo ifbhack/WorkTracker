@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS Staff (
 	staffID INT(4) AUTO_INCREMENT,
     roleName VARCHAR(15),
     name VARCHAR(20) NOT NULL,
-    password VARCHAR(30) NOT NULL,
+    password VARCHAR(88) NOT NULL, -- hash length is 88 
     isManager BOOL DEFAULT 0,
     PRIMARY KEY (staffID),
     FOREIGN KEY (roleName) REFERENCES Payrate (roleName)
@@ -65,3 +65,5 @@ VALUES (1, "2021-06-08", 1, 4),  # Joe Smith
 (2, "2021-06-15", 1, 2),
 (2, "2021-06-16", 1, 5),
 (3, "2021-06-14", 2, 9);  # Chad Chadwitch
+
+select * from Staff;

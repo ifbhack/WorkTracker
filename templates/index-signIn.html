@@ -9,9 +9,11 @@
 
     <div class="login-section container grid-lg">
         <p>Please enter your user number and password</p>
+        
         <div class="login-form form-group">
             <p style="text-align: left;">Sign in</p>
             <hr />
+
             <form action="" method="post" style="position: relative;">
                 <label class="form-label" style="text-align: left;" for="name">Name</label>
                 <input class="form-input" type="text" name="name" placeholder="Name" required>
@@ -24,6 +26,7 @@
                 <br /> <br />
                 <p style="text-align: left;">Forgot Password?</p>
             </form>
+
             <hr />
             <p style="text-align: left;">New User?</p>
             <button class="btn" style="text-align: left; float: left;"><a href="{{ url_for('signUp')}}">Sign up</a></button>
