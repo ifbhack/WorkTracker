@@ -6,17 +6,24 @@ userData = [] # 0 = id; 1 = name; 2 = password;
 
 def userSignIn():
     global userID
-
+    print("works until here")
     userID, password = request.form['name'], request.form['password']
-    
+
     if checkUser(userID, password):
         return 'Login successful'
     else:
         return 'Login failed due to incorrect login details'
 
-def userSignUp():
+def userSignUp(mysql):
     name, password = request.form['name'], request.form['password']
     
+    query = f""" INSERT INTO Staff (name, password) VALUES ('{name}', '{password}')"""
+
+    cur = mysql.connection.cursor()
+    cur.execute(query)
+    cur.connection.commit()
+    cur.close()
+
     if name[0].upper() == 'E':
         password = hashPassword(password)
         userID = generateUserID()
@@ -28,6 +35,7 @@ def userSignUp():
         storeUserData(name, password, userID)
         return name, userID
     else:
+        print("ok")
         return 'Login failed due to the username not prefixed with either "e:" or "m:"'
 
 def checkUser(userID, password):

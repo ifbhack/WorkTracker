@@ -41,7 +41,7 @@ def signIn():
 @app.route('/signUp', methods=['GET', 'POST'])
 def signUp():
   if request.method == 'POST':
-    session['name'], session['userIDs'] = functions.userSignUp()
+    session['name'], session['userIDs'] = functions.userSignUp(mysql)
     return redirect(url_for('homepage'))
   
   return render_template('index-signUp.html')
