@@ -3,6 +3,7 @@ CREATE DATABASE IF NOT EXISTS Work_Tracker;
 
 USE Work_Tracker;
 
+# Create tables
 CREATE TABLE IF NOT EXISTS Payrate (
 	roleName VARCHAR(15) NOT NULL,
     payRate DECIMAL(5, 2) NOT NULL,
@@ -36,5 +37,15 @@ CREATE TABLE IF NOT EXISTS Roster (
     FOREIGN KEY (workplaceID) REFERENCES Workplace (workplaceID)
 ); 
 
-INSERT INTO Payrate VALUES ('Floor Worker', 10.12)
+# Sample data
+INSERT INTO Payrate (roleName, payRate) VALUES ("Floor Worker", 2.80), ("CEO", 100.01);
 
+INSERT INTO Staff (roleName, name, password, isManager)
+VALUES ("Floor Worker", "Joe Smith", "Im not joe smith", False),
+("CEO", "Chad Chadwitch", "yes.itisI", True);
+
+INSERT INTO Workplace (managerID) VALUES (2);  # Chad Chadwitch
+
+INSERT INTO Roster (staffID, date, workplaceID, duration)
+VALUES (1, "2021-06-08", 1, 4),  # Joe Smith
+(2, "2021-06-09", 1, 10);  # Chad Chadwitch
