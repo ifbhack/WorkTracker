@@ -11,10 +11,10 @@ CREATE TABLE IF NOT EXISTS Payrate (
 
 CREATE TABLE IF NOT EXISTS Staff (
 	staffID INT(4) AUTO_INCREMENT,
-    roleName VARCHAR(15) NOT NULL,
+    roleName VARCHAR(15) DEFAULT 'Employee',
     name VARCHAR(20) NOT NULL,
     password VARCHAR(30) NOT NULL,
-    isManager BOOL NOT NULL,
+    isManager BOOL DEFAULT 0,
     PRIMARY KEY (staffID),
     FOREIGN KEY (roleName) REFERENCES Payrate (roleName)
 );
@@ -36,5 +36,5 @@ CREATE TABLE IF NOT EXISTS Roster (
     FOREIGN KEY (workplaceID) REFERENCES Workplace (workplaceID)
 ); 
 
-
+SELECT * FROM Payrate;
 
