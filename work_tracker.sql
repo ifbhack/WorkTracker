@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS Manager (
 	managerID INT(10) ZEROFILL AUTO_INCREMENT,
     NAME VARCHAR(30) NOT NULL,
     Password VARCHAR(30) NOT NULL,
-    PRIMARY KEY (employeeID)
+    PRIMARY KEY (managerID)
 ); 
 
 INSERT INTO Employee (Name) VALUES ('Toni');
