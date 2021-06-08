@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS Payrate (
 
 CREATE TABLE IF NOT EXISTS Staff (
 	staffID INT(4) AUTO_INCREMENT,
-    roleName VARCHAR(15) DEFAULT 'Floor Worker',
+    roleName VARCHAR(15),
     name VARCHAR(20) NOT NULL,
     password VARCHAR(30) NOT NULL,
     isManager BOOL DEFAULT 0,
@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS Staff (
 CREATE TABLE IF NOT EXISTS Workplace (
 	workplaceID INT NOT NULL AUTO_INCREMENT,
     managerID INT NOT NULL,
+    suburb VARCHAR(15) NOT NULL,
     PRIMARY KEY (workplaceID),
     FOREIGN KEY (managerID) REFERENCES Staff (staffID)
 );
@@ -51,7 +52,7 @@ VALUES ("Floor Worker", "Joe Smith", "Im not joe smith", False),
 ("Store Manager", "Cool Bill", "eatmy***", True),
 ("Shelf Stocker", "Hugo Phillips", "Ilovepeople", False);
 
-INSERT INTO Workplace (managerID) VALUES (2), (3);  # Chad Chadwitch
+INSERT INTO Workplace (managerID, suburb) VALUES (2, 'Indooripilly'), (3, 'Ipswich');  # Chad Chadwitch
 
 INSERT INTO Roster (staffID, date, workplaceID, duration)
 VALUES (1, "2021-06-08", 1, 4),  # Joe Smith
