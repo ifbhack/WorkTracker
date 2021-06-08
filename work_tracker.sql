@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS Payrate (
 
 CREATE TABLE IF NOT EXISTS Staff (
 	staffID INT(4) AUTO_INCREMENT,
-    roleName VARCHAR(15) DEFAULT 'Employee',
+    roleName VARCHAR(15) DEFAULT 'Floor Worker',
     name VARCHAR(20) NOT NULL,
     password VARCHAR(30) NOT NULL,
     isManager BOOL DEFAULT 0,
