@@ -1,11 +1,25 @@
 # GLOBAL
 from flask import Flask, render_template, request, redirect, url_for, session
+from flask_mysqldb import MySQL
+import configparser
 
 # LOCAL
 import functions
 
 # INIT
 app = Flask(__name__)
+
+config = configparser.ConfigParser()
+config.read('config.ini')
+if 'mysql' in config:
+  mysql_config = config['mysql']
+  app.config['MYSQL_USER'] = mysql_config['username']
+  app.config['MYSQL_PASSWORD'] = mysql_config['password']
+  app.config['MYSQL_DB'] = mysql_config['database']
+else:
+  raise Exception('No mysql section in the config provided')
+
+mysql = MySQL(app)
 app.secret_key = 'admin'
 SESSION_TYPE = 'redis'
 app.config.from_object(__name__)
