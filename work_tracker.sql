@@ -3,25 +3,38 @@ CREATE DATABASE IF NOT EXISTS Work_Tracker;
 
 USE Work_Tracker;
 
-CREATE TABLE IF NOT EXISTS Employee (
-	employeeID INT(10) ZEROFILL AUTO_INCREMENT,
-    Name VARCHAR(30) NOT NULL,
-    Password VARCHAR(30) NOT NULL, 
-    PRIMARY KEY (employeeID)
+CREATE TABLE IF NOT EXISTS payrate (
+	roleName VARCHAR(15) NOT NULL,
+    payRate DECIMAL(5, 2) NOT NULL,
+	PRIMARY KEY (roleName)
 );
 
-CREATE TABLE IF NOT EXISTS Manager (
-	managerID INT(10) ZEROFILL AUTO_INCREMENT,
-    NAME VARCHAR(30) NOT NULL,
-    Password VARCHAR(30) NOT NULL,
-    PRIMARY KEY (managerID)
+CREATE TABLE IF NOT EXISTS Staff (
+	staffID INT(4) AUTO_INCREMENT,
+    roleName VARCHAR(15) NOT NULL,
+    name VARCHAR(20) NOT NULL,
+    password VARCHAR(30) NOT NULL,
+    isManager BOOL NOT NULL,
+    PRIMARY KEY (staffID),
+    FOREIGN KEY (roleName) REFERENCES Payrate (roleName)
+);
+
+CREATE TABLE IF NOT EXISTS Workplace (
+	workplaceID INT NOT NULL AUTO_INCREMENT,
+    managerID INT NOT NULL,
+    PRIMARY KEY (workplaceID),
+    FOREIGN KEY (managerID) REFERENCES Staff (staffID)
+);
+
+CREATE TABLE IF NOT EXISTS Roster (
+	staffID INT NOT NULL,
+    date DATE NOT NULL,
+    workplaceID INT NOT NULL,
+    duration INT NOT NULL,
+    PRIMARY KEY (staffID, date),
+    FOREIGN KEY (staffID) REFERENCES Staff (staffID),
+    FOREIGN KEY (workplaceID) REFERENCES Workplace (workplaceID)
 ); 
 
-INSERT INTO Employee (Name) VALUES ('Toni');
 
-
-#SELECT * FROM Employee;
-#CREATE TABLE IF NOT EXISTS Manager (
-#	managerID 
-#);
 
