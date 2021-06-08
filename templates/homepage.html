@@ -16,14 +16,18 @@
     <title>Work Tracker | {% block title %}{% endblock %}</title>
 
     <style>
-        
+        h2{
+            text-align: center
+        }
     </style>
 
 </head>
 <body>
     <div id="content">
         {% block content %}
-
+        
+        <h2>Welcome: {{ user_details[0] }}</h2>
+        
         {% endblock %}
     </div>
 

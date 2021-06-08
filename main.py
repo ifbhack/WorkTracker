@@ -59,9 +59,9 @@ def signUp():
 @app.route('/homepage')
 def homepage():
   name, userID, roleName = session['name'], session['userIDs'], session['roleName']
-
-  return f'employee by the name of {name} with the ID {userID} and role {roleName}' 
-
+  user_details = [name, userID, roleName]
+  return render_template('homepage.html', user_details = user_details)
+  
 # MAIN
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
