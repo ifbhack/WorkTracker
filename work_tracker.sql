@@ -36,5 +36,5 @@ CREATE TABLE IF NOT EXISTS Roster (
     FOREIGN KEY (workplaceID) REFERENCES Workplace (workplaceID)
 ); 
 
-SELECT * FROM Payrate;
+INSERT INTO Payrate VALUES ('Floor Worker', 10.12)
 
