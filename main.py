@@ -1,6 +1,7 @@
 # GLOBAL
 from flask import Flask, render_template, request, redirect, url_for, g
 from flask_mysqldb import MySQL
+import MySQLdb
 import configparser
 
 
@@ -43,9 +44,13 @@ def index():
 @app.route('/signIn', methods=['GET', 'POST'])
 def signIn():
     if request.method == 'POST':
-        success = Staff.signIn(mysql,
-                               staffId=request.form['staffid'],
-                               password=request.form['password'])
+        try:
+            success = Staff.signIn(mysql,
+                                   staffId=request.form['staffid'],
+                                   password=request.form['password'])
+        except MySQLdb.Error:
+            return 'Database Error'
+
         if success:
             return redirect(url_for('homepage'))
         else:
@@ -58,20 +63,27 @@ def signIn():
 @app.route('/signUp', methods=['GET', 'POST'])
 def signUp():
     if request.method == 'POST':
-        success = Staff.signUp(mysql,
-                               name=request.form['name'],
-                               password=request.form['password'],
-                               roleName=request.form['roleName'])
+        try:
+            success = Staff.signUp(mysql,
+                                   name=request.form['name'],
+                                   password=request.form['password'],
+                                   roleName=request.form['roleName'])
+        except MySQLdb.Error:
+            return 'Database Error'
+
         if success:
             return redirect(url_for('homepage'))
         else:
             return 'Signup Failed'
     else:
         # DISPLAY DATA FOR USER SELECTABLE ROLES BASED OFF DATABASE INFORMATION
-        cur = mysql.connection.cursor()
-        cur.execute("""SELECT roleName FROM Payrate""")
-        role_list = cur.fetchall()
-        cur.close()
+        try:
+            cur = mysql.connection.cursor()
+            cur.execute('SELECT roleName FROM Payrate')
+            role_list = cur.fetchall()
+            cur.close()
+        except MySQLdb.Error:
+            return 'Database Error'
 
         return render_template('index-signUp.html', role_list=role_list)
 
@@ -87,7 +99,11 @@ def homepage():
 
 @app.before_request
 def getUserInfo():
-    user = Staff.get(mysql)
+    try:
+        user = Staff.get(mysql)
+    except MySQLdb.Error:
+        return 'Database Error'
+
     if user:
         g.user = Staff.get(mysql)
     else:

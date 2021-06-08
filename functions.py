@@ -13,15 +13,12 @@ class Staff:
 
     @staticmethod
     def signIn(mysql, staffId, password):
-        try:
-            cur = mysql.connection.cursor()
-            cur.execute("""SELECT 1 FROM Staff
-                        WHERE staffID = %s AND password = SHA2(%s, 256)""",
-                        (staffId, password))
-            validCredentials = cur.fetchone()
-            cur.close()
-        except Exception:
-            return False
+        cur = mysql.connection.cursor()
+        cur.execute("""SELECT 1 FROM Staff
+                    WHERE staffID = %s AND password = SHA2(%s, 256)""",
+                    (staffId, password))
+        validCredentials = cur.fetchone()
+        cur.close()
 
         if validCredentials:
             Staff.__setUserId(staffId)
@@ -31,30 +28,24 @@ class Staff:
 
     @staticmethod
     def signUp(mysql, name, password, roleName):
-        try:
-            cur = mysql.connection.cursor()
-            cur.execute("""INSERT INTO Staff (roleName, name, password)
-                        VALUES (%s, %s, SHA2(%s, 256))""",
-                        (roleName, name, password))
-            mysql.connection.commit()
-            staffId = cur.lastrowid
-            cur.close()
-            return staffId
-        except Exception:
-            return False
+        cur = mysql.connection.cursor()
+        cur.execute("""INSERT INTO Staff (roleName, name, password)
+                    VALUES (%s, %s, SHA2(%s, 256))""",
+                    (roleName, name, password))
+        mysql.connection.commit()
+        staffId = cur.lastrowid
+        cur.close()
+        return staffId
 
     @staticmethod
     def get(mysql):
         userId = session.get('userId')
         if userId:
-            try:
-                cur = mysql.connection.cursor()
-                cur.execute("""SELECT name, roleName FROM Staff
-                               WHERE staffID = %s""", (userId))
-                userDetails = cur.fetchone()
-                cur.close()
-            except Exception:
-                return False
+            cur = mysql.connection.cursor()
+            cur.execute("""SELECT name, roleName FROM Staff
+                            WHERE staffID = %s""", (userId))
+            userDetails = cur.fetchone()
+            cur.close()
 
             if userDetails:
                 return Staff(*userDetails)
