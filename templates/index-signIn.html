@@ -1,6 +1,6 @@
 {% extends "index.html" %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Sign in{% endblock %}
 
 {% block content %}
     <header>
@@ -26,7 +26,7 @@
             </form>
             <hr />
             <p style="text-align: left;">New User?</p>
-            <button class="btn" style="text-align: left; float: left;"><a href="/signUp">Sign up</a></button>
+            <button class="btn" style="text-align: left; float: left;"><a href="{{ url_for('signUp')}}">Sign up</a></button>
             <br />
         </div>
 

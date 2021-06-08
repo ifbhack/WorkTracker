@@ -14,6 +14,10 @@ app.config.from_object(__name__)
 
 # MANAGER/EMPLOYEE LOGIN
 @app.route('/', methods=['GET', 'POST'])
+def index():
+  return render_template('index-home.html')
+
+@app.route('/signIn', methods=['GET', 'POST'])
 def signIn():
   if request.method == 'POST':
     return functions.userSignIn()

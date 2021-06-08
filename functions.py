@@ -2,11 +2,14 @@ from flask import Flask, render_template, request
 import random
 
 userIDs = []
+userData = [] # 0 = id; 1 = name; 2 = password;
 
 def userSignIn():
-    name, password = request.form['name'], request.form['password']
+    global userID
+
+    userID, password = request.form['name'], request.form['password']
     
-    if checkUser(name, password):
+    if checkUser(userID, password):
         return 'Login successful'
     else:
         return 'Login failed due to incorrect login details'
@@ -27,13 +30,24 @@ def userSignUp():
     else:
         return 'Login failed due to the username not prefixed with either "e:" or "m:"'
 
-def checkUser(name, password):
-    # Check details in database | will return True or False
-    pass
+def checkUser(userID, password):
+    global userData
+
+    for i in userData:
+        if userID == i[0] and password == i[2]:
+            x = True
+        else:
+            x = False
+        
+    if x == False:
+        return False
+    else:
+        return True
+            
 
 def hashPassword(password):
     # Hash password
-    pass
+    return password
 
 def generateUserID():
     global userIDs
@@ -46,8 +60,14 @@ def generateUserID():
     return userIDs[len(userIDs)-1]
 
 def storeUserData(name, password, userID):
-    # Insert data into the database
-    pass
+    global userData
+
+    if [name, password, userID] in userData:
+        pass
+    else:
+        userData.append([userID, name, password])
+        print(userData)
+        
 
 def generateWorkplaceID():
     pass
