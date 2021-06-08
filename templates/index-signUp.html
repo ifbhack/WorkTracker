@@ -18,6 +18,16 @@
 
                 <label class="form-label" style="text-align: left;" for="password">Password</label>
                 <input class="form-input" type="password" name="password" placeholder="Password" required>
+                
+                <br />
+
+                <div class="form-group">
+                    <select class="form-select" name="roleName">
+                        {% for role in role_list %}
+                            <option type="text" value="{{ role[0] }}">{{ role[0] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
 
                 <br /> 
                 <button class="btn" type="submit" style="text-align: left; float: left;">Sign up</button>

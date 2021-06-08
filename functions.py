@@ -1,81 +1,45 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
 import random
 
-userIDs = []
-userData = [] # 0 = id; 1 = name; 2 = password;
 
-def userSignIn():
-    global userID
-    print("works until here")
+def userSignIn(mysql):
     userID, password = request.form['name'], request.form['password']
 
-    if checkUser(userID, password):
-        return 'Login successful'
+    if checkUser(userID, password, mysql):
+        return True
     else:
-        return 'Login failed due to incorrect login details'
+        return False
 
 def userSignUp(mysql):
-    name, password = request.form['name'], request.form['password']
-    
-    query = f""" INSERT INTO Staff (name, password) VALUES ('{name}', '{password}')"""
+    name, password, roleName = request.form['name'] , request.form['password'], request.form.get('roleName')
 
-    cur = mysql.connection.cursor()
-    cur.execute(query)
-    cur.connection.commit()
-    cur.close()
+    password = hashPassword(password)
+    userID = storeUserData(name, password, roleName, mysql)
+    return userID, name, roleName
 
-    if name[0].upper() == 'E':
-        password = hashPassword(password)
-        userID = generateUserID()
-        storeUserData(name, password, userID)
-        return name, userID
-    elif name[0].upper() == 'M':
-        password = hashPassword(password)
-        userID = generateUserID()
-        storeUserData(name, password, userID)
-        return name, userID
-    else:
-        print("ok")
-        return 'Login failed due to the username not prefixed with either "e:" or "m:"'
+def checkUser(userID, password, mysql):
+    try:
+        cur = mysql.connection.cursor()
+        cur.execute(f"""SELECT staffID, name, password, roleName FROM Staff WHERE staffID = '{userID}' AND password = '{password}'""")
+        userData = cur.fetchone()
 
-def checkUser(userID, password):
-    global userData
-
-    for i in userData:
-        if userID == i[0] and password == i[2]:
-            x = True
-        else:
-            x = False
-        
-    if x == False:
-        return False
-    else:
+        session['userIDs'], session['name'], session['roleName'] = userData[0], userData[1], userData[3]
+        cur.close()
         return True
-            
+    except:
+        return False
 
 def hashPassword(password):
     # Hash password
     return password
 
-def generateUserID():
-    global userIDs
+def storeUserData(name, password, roleName, mysql):
+    cur = mysql.connection.cursor()
 
-    if len(userIDs) == 0:
-        userIDs.append('000001')
-    else:
-        userIDs.append(str(int(userIDs[len(userIDs) - 1]) + 1).zfill(6))
+    cur.execute("""INSERT INTO Staff (roleName, name, password) VALUES (%s, %s, %s)""", (roleName, name, password))
+    cur.connection.commit()
 
-    return userIDs[len(userIDs)-1]
+    cur.close()
 
-def storeUserData(name, password, userID):
-    global userData
-
-    if [name, password, userID] in userData:
-        pass
-    else:
-        userData.append([userID, name, password])
-        print(userData)
+    return cur.lastrowid # This is the user ID
         
-
-def generateWorkplaceID():
-    pass

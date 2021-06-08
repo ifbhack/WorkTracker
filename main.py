@@ -8,8 +8,12 @@ import functions
 
 # INIT
 app = Flask(__name__)
-
+mysql = MySQL(app)
+app.secret_key = 'admin'
+SESSION_TYPE = 'redis'
+app.config.from_object(__name__)
 config = configparser.ConfigParser()
+
 config.read('config.ini')
 if 'mysql' in config:
   mysql_config = config['mysql']
@@ -19,10 +23,6 @@ if 'mysql' in config:
 else:
   raise Exception('No mysql section in the config provided')
 
-mysql = MySQL(app)
-app.secret_key = 'admin'
-SESSION_TYPE = 'redis'
-app.config.from_object(__name__)
 
 # FLASK FUNCTIONS
 
@@ -34,29 +34,33 @@ def index():
 @app.route('/signIn', methods=['GET', 'POST'])
 def signIn():
   if request.method == 'POST':
-    return functions.userSignIn()
+    if functions.userSignIn(mysql):
+
+      return redirect(url_for('homepage'))
+    else:
+      return 'Login Failed'
   
   return render_template('index-signIn.html')
 
 @app.route('/signUp', methods=['GET', 'POST'])
 def signUp():
   if request.method == 'POST':
-    session['name'], session['userIDs'] = functions.userSignUp(mysql)
+    session['userIDs'], session['name'], session['roleName'] = functions.userSignUp(mysql)
     return redirect(url_for('homepage'))
+
+  cur = mysql.connection.cursor()
+  cur.execute("""SELECT roleName FROM Payrate""")
+  role_list = cur.fetchall()
+  cur.connection.commit()
+  cur.close()
   
-  return render_template('index-signUp.html')
+  return render_template('index-signUp.html', role_list=role_list)
 
 @app.route('/homepage')
 def homepage():
-  name, userID= session['name'], session['userIDs']
+  name, userID, roleName = session['name'], session['userIDs'], session['roleName']
 
-  if 'e:' in session['name']:
-    return f'employee by the name of {name[2:]} with the ID {userID}'
-  elif 'm:' in session['name']:
-    return f'manager by the name of {name[2:]} with the ID {userID}' 
-  else:
-    return 'error'
-  
+  return f'employee by the name of {name} with the ID {userID} and role {roleName}' 
 
 # MAIN
 if __name__ == '__main__':
