@@ -3,7 +3,7 @@ CREATE DATABASE IF NOT EXISTS Work_Tracker;
 
 USE Work_Tracker;
 
-CREATE TABLE IF NOT EXISTS payrate (
+CREATE TABLE IF NOT EXISTS Payrate (
 	roleName VARCHAR(15) NOT NULL,
     payRate DECIMAL(5, 2) NOT NULL,
 	PRIMARY KEY (roleName)
