@@ -27,7 +27,7 @@
         <div id="content">
             {% block content %}
             
-                <h2>Welcome: {{ user_details[0] }}</h2>
+                <h2>Welcome: {{g.user.name}}. You have the role {{g.user.roleName}}</h2>
             
             {% endblock %}
         </div>

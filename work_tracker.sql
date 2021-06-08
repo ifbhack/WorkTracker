@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS Staff (
 	staffID INT(4) AUTO_INCREMENT,
     roleName VARCHAR(15),
     name VARCHAR(20) NOT NULL,
-    password VARCHAR(88) NOT NULL, -- hash length is 88 
+    password CHAR(64) NOT NULL, -- hash length is 64
     isManager BOOL DEFAULT 0,
     PRIMARY KEY (staffID),
     FOREIGN KEY (roleName) REFERENCES Payrate (roleName)
@@ -47,10 +47,10 @@ INSERT INTO Payrate (roleName, payRate) VALUES ("Floor Worker", 2.80),
     ('Store Manager', 30.50);
 
 INSERT INTO Staff (roleName, name, password, isManager)
-VALUES ("Floor Worker", "Joe Smith", "Im not joe smith", False),
-("CEO", "Chad Chadwitch", "yes.itisI", True),
-("Store Manager", "Cool Bill", "eatmy***", True),
-("Shelf Stocker", "Hugo Phillips", "Ilovepeople", False);
+VALUES ("Floor Worker", "Joe Smith", SHA2("Im not joe smith", 256), False),
+("CEO", "Chad Chadwitch", SHA2("yes.itisI", 256), True),
+("Store Manager", "Cool Bill", SHA2("eatmy***", 256), True),
+("Shelf Stocker", "Hugo Phillips", SHA2("Ilovepeople", 256), False);
 
 INSERT INTO Workplace (managerID, suburb) VALUES (2, 'Indooripilly'), (3, 'Ipswich');  # Chad Chadwitch
 
