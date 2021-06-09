@@ -3,9 +3,10 @@ from flask import session
 
 
 class Staff:
-    def __init__(self, name, roleName):
+    def __init__(self, name, roleName, isManager):
         self.name = name
         self.roleName = roleName
+        self.isManager = isManager
 
     @staticmethod
     def __setUserId(userId):
@@ -52,8 +53,8 @@ class Staff:
         userId = session.get('userId')
         if userId:
             cur = mysql.connection.cursor()
-            cur.execute("""SELECT name, roleName FROM Staff
-                            WHERE staffID = %s""", (userId))
+            cur.execute("""SELECT name, roleName, isManager FROM Staff
+                            WHERE staffID = %s""", (userId,))
             userDetails = cur.fetchone()
             cur.close()
 
