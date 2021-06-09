@@ -105,7 +105,7 @@ def getUserInfo():
         return 'Database Error'
 
     if user:
-        g.user = Staff.get(mysql)
+        g.user = Staff.getObj(mysql)
     else:
         g.user = None
 
