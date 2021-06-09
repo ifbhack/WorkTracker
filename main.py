@@ -46,8 +46,8 @@ def signIn():
     if request.method == 'POST':
         try:
             success = Staff.signIn(mysql,
-                                   staffId=request.form['staffid'],
-                                   password=request.form['password'])
+                                    staffId=request.form['staffid'],
+                                    password=request.form['password'])
         except MySQLdb.Error:
             return 'Database Error'
 
@@ -65,9 +65,9 @@ def signUp():
     if request.method == 'POST':
         try:
             Staff.signUp(mysql,
-                         name=request.form['name'],
-                         password=request.form['password'],
-                         roleName=request.form['roleName'])
+              name=request.form['name'],
+              password=request.form['password'],
+              roleName=request.form['roleName'])
         except MySQLdb.Error:
             return 'Database Error'
 
@@ -96,9 +96,9 @@ def homepage():
 
 @app.before_request
 def getUserInfo():
-    """Sets g.user to a Staff object before every page request
+    # Sets g.user to a Staff object before every page request
+    # Sets g.user to None if the user is not signed in
 
-    Sets g.user to None if the user is not signed in"""
     try:
         user = Staff.get(mysql)
     except MySQLdb.Error:
