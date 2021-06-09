@@ -64,17 +64,14 @@ def signIn():
 def signUp():
     if request.method == 'POST':
         try:
-            success = Staff.signUp(mysql,
-                                   name=request.form['name'],
-                                   password=request.form['password'],
-                                   roleName=request.form['roleName'])
+            Staff.signUp(mysql,
+                         name=request.form['name'],
+                         password=request.form['password'],
+                         roleName=request.form['roleName'])
         except MySQLdb.Error:
             return 'Database Error'
 
-        if success:
-            return redirect(url_for('homepage'))
-        else:
-            return 'Signup Failed'
+        return redirect(url_for('homepage'))
     else:
         # DISPLAY DATA FOR USER SELECTABLE ROLES BASED OFF DATABASE INFORMATION
         try:
@@ -99,6 +96,9 @@ def homepage():
 
 @app.before_request
 def getUserInfo():
+    """Sets g.user to a Staff object before every page request
+
+    Sets g.user to None if the user is not signed in"""
     try:
         user = Staff.get(mysql)
     except MySQLdb.Error:
