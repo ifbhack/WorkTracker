@@ -1,9 +1,7 @@
-# GLOBAL
 from flask import Flask, render_template, request, redirect, url_for, g
 from flask_mysqldb import MySQL
 import MySQLdb
 import configparser
-
 
 # LOCAL
 from functions import Staff
@@ -20,19 +18,23 @@ SESSION_TYPE = 'redis'
 # SQL INIT
 mysql = MySQL(app)
 app.config.from_object(__name__)
+
 config = configparser.ConfigParser()
-config.read('config.ini')
-
-if 'mysql' in config:
+if config.read('config.ini') == []:
+    # create new config file
+    config['mysql'] = {}
     mysql_config = config['mysql']
-    app.config['MYSQL_USER'] = mysql_config['username']
-    app.config['MYSQL_PASSWORD'] = mysql_config['password']
-    app.config['MYSQL_DB'] = mysql_config['database']
+    mysql_config['username'] = 'root'
+    mysql_config['password'] = 'secret'
+    mysql_config['database'] = 'work_tracker'
+    with open('config.ini', 'w') as f:
+        config.write(f)
 else:
-    raise Exception('No mysql section in the config provided')
+    mysql_config = config['mysql']
+app.config['MYSQL_USER'] = mysql_config['username']
+app.config['MYSQL_PASSWORD'] = mysql_config['password']
+app.config['MYSQL_DB'] = mysql_config['database']
 
-
-# FLASK FUNCTIONS
 
 # MAIN LANDING PAGE
 @app.route('/', methods=['GET', 'POST'])

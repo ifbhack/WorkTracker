@@ -1,4 +1,3 @@
-# GLOBAL IMPORTS
 from flask import session
 
 
@@ -78,5 +77,4 @@ class Staff:
                   WHERE staffID = %s"""
         cur.execute(sql, (self.userId,))
         result = cur.fetchone()
-        print(result)
         return {'daily': result[0], 'weekly': result[1], 'monthly': result[2]}
