@@ -3,7 +3,8 @@ from flask import session
 
 
 class Staff:
-    def __init__(self, name, roleName, isManager):
+    def __init__(self, userId, name, roleName, isManager):
+        self.userId = userId
         self.name = name
         self.roleName = roleName
         self.isManager = isManager
@@ -18,7 +19,6 @@ class Staff:
         and returns True if the credentials are valid
 
         Returns False if the credentials are invalid"""
-
         cur = mysql.connection.cursor()
         cur.execute("""SELECT 1 FROM Staff
                     WHERE staffID = %s AND password = SHA2(%s, 256)""",
@@ -36,7 +36,6 @@ class Staff:
     def signUp(mysql, name, password, roleName):
         """Inserts a new staff member into the database
         and sets the session userid to the created staff member"""
-
         cur = mysql.connection.cursor()
         cur.execute("""INSERT INTO Staff (roleName, name, password)
                     VALUES (%s, %s, SHA2(%s, 256))""",
@@ -51,7 +50,6 @@ class Staff:
         """Returns a Staff object based on the session user id
 
         Returns False if no staff infomation is found"""
-
         userId = session.get('userId')
         if userId:
             cur = mysql.connection.cursor()
@@ -61,8 +59,24 @@ class Staff:
             cur.close()
 
             if userDetails:
-                return Staff(*userDetails)
+                return Staff(userId, *userDetails)
             else:
                 return False
         else:
             return False
+
+    def getStaffPayInfo(self, mysql):
+        cur = mysql.connection.cursor()
+        DAYS_IN_MONTH = 30
+        DAYS_IN_WEEK = 7
+        hoursOfWorkPerDay = 8  # assume everyone work 8 hours a day for now
+        sql = f"""SELECT payRate * {hoursOfWorkPerDay},
+                         payRate * {hoursOfWorkPerDay} * {DAYS_IN_WEEK},
+                         payRate * {hoursOfWorkPerDay} * {DAYS_IN_MONTH}
+                  FROM Staff s
+                  INNER JOIN Payrate p ON s.roleName=p.roleName
+                  WHERE staffID = %s"""
+        cur.execute(sql, (self.userId,))
+        result = cur.fetchone()
+        print(result)
+        return {'daily': result[0], 'weekly': result[1], 'monthly': result[2]}

@@ -1,0 +1,40 @@
+{% extends "homepage.html" %}
+
+{% block title %}Sign in{% endblock %}
+
+{% block content %}
+
+<h2>Welcome: {{g.user.name}}. You have the role {{g.user.roleName}}</h2>
+
+<div class="form-group">
+    <label class="form-radio">
+        <input type="radio" name="payment" value="daily"></input>
+        <i class="form-icon"></i> See Daily Payment
+    </label>
+    <label class="form-radio">
+        <input type="radio" name="payment" value="weekly"></input>
+        <i class="form-icon"></i> See Weekly Payment
+    </label>
+    <label class="form-radio">
+        <input type="radio" name="payment" value="monthly" checked></input>
+        <i class="form-icon"></i> See Monthly Payment
+    </label>
+</div>
+
+<h4 id="viewPayInfo">${{payInfo['monthly']}}</h4>
+
+
+<script>
+    const payInfo = {daily: "{{payInfo['daily']}}", weekly: "{{payInfo['weekly']}}", monthly: "{{payInfo['monthly']}}"};
+    const payInfoText = document.querySelector("#viewPayInfo");
+
+    function radioButtonChange(e) {
+        const selectedPayInfoType = e.target.value;
+        payInfoText.innerText = "$" + payInfo[selectedPayInfoType];
+    }
+
+    const radioButtons = document.querySelectorAll("input");
+    radioButtons.forEach(y => addEventListener("change", radioButtonChange));
+</script>
+
+{% endblock %}

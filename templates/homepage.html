@@ -27,13 +27,6 @@
         <div id="content">
             {% block content %}
             
-                <h2>Welcome: {{g.user.name}}. You have the role {{g.user.roleName}}</h2>
-                {% if g.user.isManager %}
-                    <h2>You are a manager</h2>
-                {% else %}
-                    <h2>You are an employee</h2>
-                {% endif %}
-            
             {% endblock %}
         </div>
     </body>
