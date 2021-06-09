@@ -100,12 +100,12 @@ def getUserInfo():
     # Sets g.user to None if the user is not signed in
 
     try:
-        user = Staff.get(mysql)
+        user = Staff.getObj(mysql)
     except MySQLdb.Error:
         return 'Database Error'
 
     if user:
-        g.user = Staff.getObj(mysql)
+        g.user = user
     else:
         g.user = None
 
