@@ -95,7 +95,10 @@ def homepage():
             return "Manager page"  # todo
         else:
             payInfo = g.user.getStaffPayInfo(mysql)
-            return render_template('homepage-employee.html', payInfo=payInfo)
+            roster = g.user.getRoster(mysql)
+            return render_template('homepage-employee.html',
+                                   payInfo=payInfo,
+                                   roster=roster)
     else:
         return "Not logged in"
 

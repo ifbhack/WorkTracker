@@ -78,3 +78,15 @@ class Staff:
         cur.execute(sql, (self.userId,))
         result = cur.fetchone()
         return {'daily': result[0], 'weekly': result[1], 'monthly': result[2]}
+
+    def getRoster(self, mysql):
+        """Returns the staff roster from the current week Monday to Sunday"""
+        cur = mysql.connection.cursor()
+        sql = """
+            SELECT staffID, GROUP_CONCAT(DATE_FORMAT(date, '%a')) FROM Roster
+            WHERE date BETWEEN SUBDATE(CURDATE(), WEEKDAY(CURDATE())) AND
+                               ADDDATE(CURDATE(), 6 - WEEKDAY(CURDATE()))
+            GROUP BY staffID"""
+        cur.execute(sql)
+        result = cur.fetchall()
+        return result

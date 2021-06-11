@@ -23,7 +23,6 @@
 
 <h4 id="viewPayInfo">${{payInfo['monthly']}}</h4>
 
-
 <script>
     const payInfo = {daily: "{{payInfo['daily']}}", weekly: "{{payInfo['weekly']}}", monthly: "{{payInfo['monthly']}}"};
     const payInfoText = document.querySelector("#viewPayInfo");
@@ -36,5 +35,35 @@
     const radioButtons = document.querySelectorAll("input");
     radioButtons.forEach(y => addEventListener("change", radioButtonChange));
 </script>
+
+<!-- Example use of roster data -->
+{{roster}}
+<br>
+{{roster[1][1].split(',')}}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th rowspan="2">#</th>
+            <th rowspan="2">Task</th>
+            <th rowspan="2">Start</th>
+            <th rowspan="2">End</th>
+            <th colspan="7">Week X</th>
+        </tr>
+        <tr>
+            <th>Mon</th>
+            <th>Tues</th>
+            <th>Wed</th>
+            <th>Thurs</th>
+            <th>Fri</th>
+            <th>Sat</th>
+            <th>Sun</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        </tr>
+    </tbody>
+</table>
 
 {% endblock %}
