@@ -4,6 +4,7 @@ from flask import current_app, g, Flask
 from flask.cli import with_appcontext
 
 SCHEMA_FILENAME = "schema.sql"
+TEST_DATA_FILENAME = "test_data.sql"
 
 def get_test_database() -> sqlite3.Connection:
     """get_test_database for unit testing the model classes"""
@@ -35,6 +36,9 @@ def initialise_database():
     db_conn: sqlite3.Connection = get_database()
 
     with current_app.open_resource(SCHEMA_FILENAME) as schema_file:
+        db_conn.executescript(schema_file.read().decode("utf8"))
+
+    with current_app.open_resource(TEST_DATA_FILENAME) as schema_file:
         db_conn.executescript(schema_file.read().decode("utf8"))
 
 @click.command('init-db')
