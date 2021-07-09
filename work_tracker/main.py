@@ -63,6 +63,11 @@ def homepage():
         return "Not logged in"
 
 
+@app.route('/view_employees')
+def view_employees():
+    return render_template('index-view-employees.html')
+
+
 @app.before_request
 def getUserInfo():
     """Sets g.user to a Staff object before every page request
