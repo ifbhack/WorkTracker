@@ -25,7 +25,11 @@
                     <a href="..." class="btn btn-link">Home</a>
                     <a href="..." class="btn btn-link">Roster</a>
                     <a href="..." class="btn btn-link">Availability</a>
-                    <a href="..." class="btn btn-link">Payroll Query</a> <!-- use jinja if statement | manager only -->
+
+                    {% if g.user.isManager == 1 %}
+                        <a href="..." class="btn btn-link">Payroll Query</a>
+                    {% endif %}
+
                     <a href="..." class="btn btn-link">Queries</a>
                 </section>
                 <section class="navbar-section">
@@ -34,11 +38,12 @@
                     </div>
                 </section>
             </header>
-        </div>
-        <div id="content">
-            {% block content %}
-
-            {% endblock %}
+        
+            <div id="content">
+                {% block content %}
+ 
+                {% endblock %}
+            </div>
         </div>
     </body>
 </html>
