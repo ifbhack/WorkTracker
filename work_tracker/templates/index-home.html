@@ -11,25 +11,9 @@
 {% block content %}
 
 {% if g.user.isManager == 1 %}
-    <div class="columns" style="text-align: center; padding-top: 5%;">
-          <div class="column col-xl-4" style="background-color: yellow; margin-left: 2%;">Your mum</div>  
-          <div class="column col-xl-4" style="background-color: yellow; margin: 0% 2% 0% 2%;">Your dad</div>
-          <div class="column col-xl-4" style="background-color: yellow; margin-right: 2%;">Your sister</div>
-    </div>
-    <div class="columns" style="text-align: center; padding-top: 5%;">
-        <div class="column col-xl-4" style="background-color: yellow; margin-left: 2%;">Your mum</div>  
-        <div class="column col-xl-4" style="background-color: yellow; margin: 0% 2% 0% 2%;">Your dad</div>
-        <div class="column col-xl-4" style="background-color: yellow; margin-right: 2%;">Your sister</div>
-    </div>
-    <div class="columns" style="text-align: center; padding-top: 5%;">
-        <div class="column col-xl-4" style="background-color: yellow; margin-left: 2%;">Your mum</div>  
-        <div class="column col-xl-4" style="background-color: yellow; margin: 0% 2% 0% 2%;">Your dad</div>
-        <div class="column col-xl-4" style="background-color: yellow; margin-right: 2%;">Your sister</div>
-    </div>
+    {{"Manager"}}
 {% else %}
-    <div class="columns">
-        <h1>Employee</h1>
-    </div>
+    {{"Employee"}}
 {% endif %}
 
 {% endblock %}

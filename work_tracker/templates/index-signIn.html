@@ -19,11 +19,11 @@
             .login-section {
                 text-align: center; 
                 position: relative; 
-                padding: 5%;  
+                padding: 50px;  
             }
 
             .login-form {
-                padding: 5% 5% 7% 5%;
+                padding: 50px;
                 margin: auto;
 
                 width: 50%;
@@ -33,7 +33,7 @@
             }
 
             .info {
-                padding: 5%;
+                padding: 50px;
                 margin: auto;
 
                 width: 50%;
@@ -47,7 +47,7 @@
     </head>
     
     <body>
-        <header">
+        <header>
             <h1 style="text-align: center; position: relative; top: 50px;">Work Tracker</h1>
         </header>
     
@@ -66,11 +66,17 @@
                     <input class="form-input" type="password" name="password" placeholder="Password" required>
     
                     <br /> 
-                    <button class="btn" type="submit" style="text-align: left; float: left; padding-bottom: 5%;">Sign in</button>
+                    <button class="btn" type="submit" style="text-align: left; float: left;">Sign in</button>
+                    <br /> <br />
+                    <p style="text-align: left;">Forgot Password?</p>
                 </form>
-                <br /> 
+    
+                <hr />
+                <p style="text-align: left;">New User?</p>
+                <button class="btn" style="text-align: left; float: left;"><a href="{{ url_for('signUp')}}">Sign up</a></button>
+                <br />
             </div>
-
+    
             <span class="helper">Help</span>    <span class="helper">Contact us</span>
         </div>
     </body>
