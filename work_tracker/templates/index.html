@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- Remove favicon error message -->
+        <link rel="shortcut icon" href="#">
+
+        <!-- Spectre.css import -->
+        <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+        <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+        <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+
+        <title>Work Tracker | {% block title %}{% endblock %}</title>
+
+    </head>
+    
+    <body>
+        <div class="container grid-xl">
+            <header class="navbar">
+                <section class="navbar-section">
+                    <a href="..." class="navbar-brand mr-2">Work Tracker</a>
+                    <a href="..." class="btn btn-link">Home</a>
+                    <a href="..." class="btn btn-link">Roster</a>
+                    <a href="..." class="btn btn-link">Availability</a>
+                    <a href="..." class="btn btn-link">Payroll Query</a> <!-- use jinja if statement | manager only -->
+                    <a href="..." class="btn btn-link">Queries</a>
+                </section>
+                <section class="navbar-section">
+                    <div class="input-group input-inline">
+                        <a href="..." class="btn btn-link">Welcome {{name}}</a>
+                    </div>
+                </section>
+            </header>
+        </div>
+        <div id="content">
+            {% block content %}
+
+            {% endblock %}
+        </div>
+    </body>
+</html>
