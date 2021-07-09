@@ -56,12 +56,9 @@ def signIn():
 @app.route('/homepage')
 def homepage():
     if g.user:
-        if g.user.isManager:
-            return "Manager page"  # todo
-        else:
-            payInfo = g.user.getStaffPayInfo(mysql)
-            roster = g.user.getRoster(mysql)
-            return render_template('index-employee.html', name=g.user.name)
+        payInfo = g.user.getStaffPayInfo(mysql)
+        roster = g.user.getRoster(mysql)
+        return render_template('index-home.html', name=g.user.name, isManager=g.user.isManager)
     else:
         return "Not logged in"
 

@@ -1,0 +1,19 @@
+{% extends "index.html" %}
+
+{% block title %}
+    {% if g.user.isManager == 1 %}
+        {{"Manager Homepage"}}
+    {% else %}
+        {{"Employee Homepage"}}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+{% if g.user.isManager == 1 %}
+    {{"Manager"}}
+{% else %}
+    {{"Employee"}}
+{% endif %}
+
+{% endblock %}
