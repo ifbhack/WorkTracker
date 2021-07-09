@@ -34,11 +34,6 @@ class StaffModel:
         Returns False if the credentials are invalid"""
         pass
 
-    def signUp(self, name, password, roleName):
-        """Inserts a new staff member into the database
-        and sets the session userid to the created staff member"""
-        pass
-
     def __convert_staff_row(self, row: List[Any]):
         return Staff(row[0], row[1], row[2], row[3],
                      row[4], row[5], row[6], row[7],
