@@ -23,13 +23,17 @@
 <table class="table">
     <thead>
       <tr>
-        <th>Employee Number</th>
+        <th>Employee ID</th>
         <th>First Name</th>
         <th>Last Name</th>
         <th>Email</th>
         <th>Contact Number</th>
+        <th>Address</th>
+        <th>Suburb</th>
+        <th>Postcode</th>
+        <th>State</th>
+        <th>Date of Birth</th>
         <th>Employee Level</th>
-        <th>Hire Date</th>
       </tr>
     </thead>
     <tbody>
@@ -38,7 +42,18 @@
         <th>{{ staffMember.staffID }}</th>
         <th>{{ staffMember.firstName}}</th>
         <th>{{ staffMember.lastName }}</th>
-        <th>{{ staffMember.email}}</th>
+        <th>{{ staffMember.email }}</th>
+        <th>{{ staffMember.contactNumber }}</th>
+        <th>{{ staffMember.address }}</th>
+        <th>{{ staffMember.suburb }}</th>
+        <th>{{ staffMember.postcode }}</th>
+        <th>{{ staffMember.state }}</th>
+        <th>{{ staffMember.dob }}</th>
+        {% if g.user.isManager == True %}
+          <th>Manager</th>
+        {% else %}
+          <th>Employee</th>
+        {% endif %}
       </tr>
     {% endfor %}
     </tbody>
