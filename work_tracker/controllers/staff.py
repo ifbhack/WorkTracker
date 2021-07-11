@@ -12,10 +12,25 @@ def view():
     return render_template('index-view-employees.html', staffMembers=staffMembers)
 
 
-@bp.route("/edit", methods=["GET"])
-def edit():
+@bp.route("/create", methods=["GET", "POST"])
+def create():
     # NOTE: Hack to get g.user working from view function
     staffMembers = g.staffModel.getStaffMembers()
     g.user = staffMembers[0]
+
+    if request.method == 'POST':
+        g.staffModel.createStaffMember(
+            # TODO: Fill out missing form data
+            request.form['fname'],
+            request.form['lname'],
+            request.form['eaddress'],
+            "password",
+            request.form['contact'],
+            request.form['address1'] + ' ' + request.form['address2'],
+            request.form['suburb'],
+            request.form['postcode'],
+            request.form['state'],
+            "2016-08-30",
+            False)
 
     return render_template('index-edit-employee.html')
