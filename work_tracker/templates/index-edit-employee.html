@@ -4,47 +4,51 @@
 
 {% block content %}
 
-<body>
 <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
 <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
 <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
 
 <center>
 <form method="post">
-<h1>Employee Information</h1>
-<br><br>
+  <h1>Employee Information</h1>
+  <br><br>
+
   <label for="fname">First Name:</label>
-  <input type="text" id="fname" name="fname" size="50" value="{{ g.user.firstName }}">
+  <input type="text" id="fname" name="fname" size="50" value="{{ staffMember.firstName }}">
   <label>Last Name:</label>
-  <input type="text" id="lname" name="lname" maxlength="360" size="50" value="{{ g.user.lastName }}"><br><br>
+  <input type="text" id="lname" name="lname" maxlength="360" size="50" value="{{ staffMember.lastName }}"><br><br>
   <label>Email Address:</label>
-  <input type="text" id="eaddress" name="eaddress" maxlength="360" size="60" value="{{ g.user.email }}">
+  <input type="text" id="eaddress" name="eaddress" maxlength="360" size="60" value="{{ staffMember.email }}">
 
   <label>Contact Number:</label>
-  <input type="text" id="contact" name="contact" maxlength="360" size="31" value="{{ g.user.contactNumber }}"><br><br>
+  <input type="text" id="contact" name="contact" maxlength="360" size="31" value="{{ staffMember.contactNumber }}"><br><br>
   <label>Address</label>
-  <input type="text" id="address1" name="address1" maxlength="360" size="51" value="{{ g.user.address }}">
+  <input type="text" id="address1" name="address1" maxlength="360" size="51" value="{{ staffMember.address }}">
     <br><br>
 
 
   <label>Suburb</label>
-  <input type="text" id="suburb" name="suburb" maxlength="360" size="31" value="{{ g.user.suburb }}">
+  <input type="text" id="suburb" name="suburb" maxlength="360" size="31" value="{{ staffMember.suburb }}">
 
 
   <label>Postcode:</label>
-  <input type="text" id="postcode" name="postcode" maxlength="360" size="31" value="{{ g.user.postcode }}">
+  <input type="text" id="postcode" name="postcode" maxlength="360" size="31" value="{{ staffMember.postcode }}">
 
   <label>State:</label>
-  <input type="text" id="state" name="state" maxlength="360" size="21" placeholder="e.g. QLD or NSW " value="{{ g.user.state }}"> <br><br>
+  <input type="text" id="state" name="state" maxlength="360" size="21" placeholder="e.g. QLD or NSW " value="{{ staffMember.state }}"> <br><br>
 
   <label>Date of Birth:</label>
-  <input type="text" id="dob" name="dob" placeholder="DD/MM/YYYY" maxlength="360" size="31" value="{{ g.user.dob }}">
+  <input type="text" id="dob" name="dob" placeholder="DD/MM/YYYY" maxlength="360" size="31" value="{{ staffMember.dob }}">
 
   <label>Employee Level:</label>
   <!-- TODO: Give option between employee and manager -->
-  <input type="text" id="level" name="level" maxlength="360" size="31" value="{{ g.user.isManager }}">
+  <input type="text" id="level" name="level" maxlength="360" size="31" value="{{ staffMember.isManager }}">
 
-<button class="btn btn-success">Submit</button>
+  <input type="hidden" name="staffID" value="{{ staffMember.staffID }}">
+
+  <button class="btn btn-success">Submit</button>
+
+</form>
 
 <br><br>
 <br><br>
@@ -56,7 +60,4 @@
 <br><br>
     <p>Kmart © 2008</p>
 </center>
-
-</body>
-</html>
 {% endblock %}

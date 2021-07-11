@@ -1,6 +1,7 @@
 import sqlite3
 from typing import List, Any
 
+
 class Staff:
     def __init__(self, staffID,
                  firstName, lastName,
@@ -14,25 +15,35 @@ class Staff:
         self.email = email
         self.contactNumber = contactNumber
         self.address = address
-        self.suburb= suburb
+        self.suburb = suburb
         self.postcode = postcode
-        self.state= state
+        self.state = state
         self.dob = dob
         self.isManager = isManager
+
 
 class StaffModel:
     _dbConn: sqlite3.Connection
 
-
     def __init__(self, dbConn):
         self._dbConn = dbConn
 
-    def signIn(self):
+    def signIn(self, staffID, password):
         """Sets the session userid
         and returns True if the credentials are valid
 
         Returns False if the credentials are invalid"""
-        pass
+        cursor = self._dbConn.cursor()
+        sql = """
+            SELECT 1
+            FROM Staff
+            WHERE staffID = ? AND password = ?"""
+        cursor.execute(sql, (staffID, password))
+        row = cursor.fetchone()
+        if row:
+            return True
+        else:
+            return False
 
     def __convertStaffRow(self, row: List[Any]):
         return Staff(row[0], row[1], row[2],
@@ -104,7 +115,12 @@ class StaffModel:
 
         return staffMembers
 
-    def updateStaffMember(self, staffMember: Staff):
+    def updateStaffMember(self, staffID,
+                 firstName, lastName,
+                 email, contactNumber,
+                 address, suburb,
+                 postcode, state,
+                 dob, isManager):
         cursor = self._dbConn.cursor()
         # TODO: better way of doing this?
         cursor.execute(
@@ -121,12 +137,12 @@ class StaffModel:
                 isManager = ?
                WHERE staffID = ?
             """
-            , (staffMember.firstName, staffMember.lastName,
-                 staffMember.email, staffMember.contactNumber,
-                 staffMember.address, staffMember.suburb,
-                 staffMember.postcode, staffMember.state,
-                 staffMember.dob, staffMember.isManager,
-                 staffMember.staffID)
+            , (firstName, lastName,
+                 email, contactNumber,
+                 address, suburb,
+                 postcode, state,
+                 dob, isManager,
+                 staffID)
         )
 
         self._dbConn.commit()

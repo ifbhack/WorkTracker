@@ -54,6 +54,12 @@
         {% else %}
           <th>Employee</th>
         {% endif %}
+        <th>
+          <form action="{{ url_for('staff.edit') }}">
+            <input type="hidden" name="staffID" value="{{ staffMember.staffID }}">
+            <button class="btn" type="submit">Edit</button>
+          </form>
+        </th>
       </tr>
     {% endfor %}
     </tbody>

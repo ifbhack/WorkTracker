@@ -2,26 +2,25 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash,
 
 bp = Blueprint("staff", __name__, url_prefix="/staff")
 
+# TODO: Check if user is signed in before accessing pages
 
-@bp.route("/view", methods=["GET"])
-def view():
+@bp.route("/homepage", methods=["GET"])
+def homepage():
+    return render_template('index.html')
+
+
+@bp.route("/view_employees", methods=["GET"])
+def view_employees():
     # TODO: add try/catch, for now fail hard
     staffMembers = g.staffModel.getStaffMembers()
 
-    # NOTE: quick hack for now just to display something in the view
-    g.user = staffMembers[0]
     return render_template('index-view-employees.html', staffMembers=staffMembers)
 
 
 @bp.route("/create", methods=["GET", "POST"])
 def create():
-    # NOTE: Hack to get g.user working from view function
-    staffMembers = g.staffModel.getStaffMembers()
-    g.user = staffMembers[0]
-
     if request.method == 'POST':
         g.staffModel.createStaffMember(
-            # TODO: Fill out missing form data
             request.form['fname'],
             request.form['lname'],
             request.form['eaddress'],
@@ -38,26 +37,29 @@ def create():
 
 @bp.route("/edit", methods=["GET", "POST"])
 def edit():
-    # NOTE: Hack to get g.user working from view function
-    staffMembers = g.staffModel.getStaffMembers()
-    g.user = staffMembers[0]
-
-    # TODO: Edit other employees other than g.user
-    # TODO: On submit, data is changed but fields contain old data
     if request.method == 'POST':
-        staffMember = g.staffModel.getStaffMember(g.user.staffID)
+        form = request.form
 
-        staffMember.firstName = request.form['fname']
-        staffMember.lastName = request.form['lname']
-        staffMember.email = request.form['eaddress']
-        staffMember.contactNumber = request.form['contact']
-        staffMember.address = request.form['address1']
-        staffMember.suburb = request.form['suburb']
-        staffMember.postcode = request.form['postcode']
-        staffMember.state = request.form['state']
-        staffMember.dob = request.form['dob']
-        staffMember.isManager = request.form['level']
+        g.staffModel.updateStaffMember(
+            form['staffID'],
+            form['fname'],
+            form['lname'],
+            form['eaddress'],
+            form['contact'],
+            form['address1'],
+            form['suburb'],
+            form['postcode'],
+            form['state'],
+            form['dob'],
+            form['level']
+        )
 
-        g.staffModel.updateStaffMember(staffMember)
+    # TODO: fix mess here
+    staffID = request.args.get('staffID')
+    if staffID is None:
+        # Edit the current user
+        staffID = g.user.staffID
 
-    return render_template('index-edit-employee.html')
+    staffMember = g.staffModel.getStaffMember(staffID)
+
+    return render_template('index-edit-employee.html', staffMember=staffMember)

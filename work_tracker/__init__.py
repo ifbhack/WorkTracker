@@ -1,5 +1,5 @@
 import os
-from flask import Flask, redirect, url_for, g, render_template, request
+from flask import Flask, redirect, url_for, g, render_template, request, session
 from work_tracker.models import StaffModel
 
 def create_app(test_config=None):
@@ -30,22 +30,35 @@ def create_app(test_config=None):
     def createModels():
         dbConn = db.getDatabase()
         g.staffModel = StaffModel(dbConn)
-        # TODO: setup user sessions here
 
-    @app.route("/")
+        staffID = session.get('staffID')
+        if staffID:
+            # TODO: Handle exception
+            g.user = g.staffModel.getStaffMember(staffID)
+
+    @app.route("/", methods=["GET", "POST"])
     def signIn():
         # TODO: check if user is already signed in
         if request.method == 'POST':
-            try:
-                # TODO: sign user in, here we can check if a staff
-                # member is a manager and redirect them to the appropriate blueprint
-                # return render_template('index-home.html', name=g.user.name, isManager=g.user.isManager)
-                return "Login"
-            except Exception:
-                return 'User Not Found'
+            # TODO: sign user in, here we can check if a staff
+            # member is a manager and redirect them to the appropriate blueprint
+            # return render_template('index-home.html', name=g.user.name, isManager=g.user.isManager)
+
+            vaildCredentials = g.staffModel.signIn(
+                request.form['staffid'], request.form['password'])
+            if vaildCredentials:
+                session['staffID'] = request.form['staffid']
+                return redirect(url_for('staff.homepage'))
+            else:
+                return "Login Failed"
 
         else:
             return render_template('index-signIn.html')
 
+    # Temp signout feature for debugging
+    @app.route("/signout")
+    def signOut():
+        session['staffID'] = None
+        return "signed out"
 
     return app
