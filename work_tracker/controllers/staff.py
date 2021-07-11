@@ -63,3 +63,8 @@ def edit():
     staffMember = g.staffModel.getStaffMember(staffID)
 
     return render_template('index-edit-employee.html', staffMember=staffMember)
+
+
+@bp.route("/calendar", methods=["GET"])
+def calendar():
+    return render_template('index-calendar.html')

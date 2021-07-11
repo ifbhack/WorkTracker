@@ -1,0 +1,47 @@
+{% extends "index.html" %}
+
+{% block title %}Calendar{% endblock %}
+
+{% block content %}
+
+{% set times = ['9am', '10am', '11am', '12am', '1pm', '2pm', '3pm', '4pm', '5pm'] %}
+
+<div class="columns col-gapless">
+    <div class="column col-1"></div>
+    {% for time in times %}
+    <div class="column col-1">{{ time }}</div>
+    {% endfor %}
+</div>
+
+{% for day in ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'] %}
+<div class="columns col-gapless">
+    <div class="column col-1">{{ day }}</div>
+    {% for time in range(times|length - 1) %}
+    <div class="bg-gray column col-1">
+        <button class="btn btn-link" onClick="console.log('test')">+</button>
+    </div>
+    {% endfor %}
+</div>
+{% endfor %}
+
+<script>
+    class Week {
+        static times = ['9am', '10am', '11am', '12am', '1pm', '2pm', '3pm', '4pm', '5pm']
+        static days = ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun']
+
+        constructor() {
+            this.recordedTimes = []
+            for(const day of Week.days) {
+                this.recordedTimes[day] = []
+                for (const time of Week.times) {
+                    this.recordedTimes[day][time] = false
+                }
+            }
+        }
+    }
+
+    const week = new Week()
+    console.log(week.recordedTimes)
+</script>
+
+{% endblock %}
