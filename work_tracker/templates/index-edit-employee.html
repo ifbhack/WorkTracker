@@ -14,36 +14,35 @@
 <h1>Employee Information</h1>
 <br><br>
   <label for="fname">First Name:</label>
-  <input type="text" id="fname" name="fname" size="50">
+  <input type="text" id="fname" name="fname" size="50" value="{{ g.user.firstName }}">
   <label>Last Name:</label>
-  <input type="text" id="lname" name="lname" maxlength="360" size="50"><br><br>
+  <input type="text" id="lname" name="lname" maxlength="360" size="50" value="{{ g.user.lastName }}"><br><br>
   <label>Email Address:</label>
-  <input type="text" id="eaddress" name="eaddress" maxlength="360" size="60">
+  <input type="text" id="eaddress" name="eaddress" maxlength="360" size="60" value="{{ g.user.email }}">
 
   <label>Contact Number:</label>
-  <input type="text" id="contact" name="contact" maxlength="360" size="31"><br><br>
-  <label>Address 1:</label>
-  <input type="text" id="address1" name="address1" maxlength="360" size="51">
-  <label>Address 2:</label>
-  <input type="text" id="address2" name="address2" maxlength="360" size="51" placeholder="This address is optional">
+  <input type="text" id="contact" name="contact" maxlength="360" size="31" value="{{ g.user.contactNumber }}"><br><br>
+  <label>Address</label>
+  <input type="text" id="address1" name="address1" maxlength="360" size="51" value="{{ g.user.address }}">
     <br><br>
 
 
   <label>Suburb</label>
-  <input type="text" id="suburb" name="suburb" maxlength="360" size="31">
+  <input type="text" id="suburb" name="suburb" maxlength="360" size="31" value="{{ g.user.suburb }}">
 
 
   <label>Postcode:</label>
-  <input type="text" id="postcode" name="postcode" maxlength="360" size="31">
+  <input type="text" id="postcode" name="postcode" maxlength="360" size="31" value="{{ g.user.postcode }}">
 
   <label>State:</label>
-  <input type="text" id="state" name="state" maxlength="360" size="21" placeholder="e.g. QLD or NSW "> <br><br>
+  <input type="text" id="state" name="state" maxlength="360" size="21" placeholder="e.g. QLD or NSW " value="{{ g.user.state }}"> <br><br>
 
   <label>Date of Birth:</label>
-  <input type="text" id="dob" name="dob" placeholder="DD/MM/YYYY" maxlength="360" size="31">
+  <input type="text" id="dob" name="dob" placeholder="DD/MM/YYYY" maxlength="360" size="31" value="{{ g.user.dob }}">
 
   <label>Employee Level:</label>
-  <input type="text" id="level" name="level" maxlength="360" size="31">
+  <!-- TODO: Give option between employee and manager -->
+  <input type="text" id="level" name="level" maxlength="360" size="31" value="{{ g.user.isManager }}">
 
 <button class="btn btn-success">Submit</button>
 
