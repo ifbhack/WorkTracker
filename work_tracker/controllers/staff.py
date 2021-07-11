@@ -10,3 +10,12 @@ def view():
     # NOTE: quick hack for now just to display something in the view
     g.user = staffMembers[0]
     return render_template('index-view-employees.html', staffMembers=staffMembers)
+
+
+@bp.route("/edit", methods=["GET"])
+def edit():
+    # NOTE: Hack to get g.user working from view function
+    staffMembers = g.staffModel.getStaffMembers()
+    g.user = staffMembers[0]
+
+    return render_template('index-edit-employee.html')
