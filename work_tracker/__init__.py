@@ -2,7 +2,7 @@ import os
 from flask import Flask, redirect, url_for, g, render_template, request
 from work_tracker.models import StaffModel
 
-def createApp(test_config=None):
+def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY='dev',
