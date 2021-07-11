@@ -4,7 +4,7 @@ from typing import List, Any
 class Staff:
     def __init__(self, staffID,
                  firstName, lastName,
-                 email, password, contactNumber,
+                 email, contactNumber,
                  address, suburb,
                  postcode, state,
                  dob, isManager):
@@ -12,7 +12,6 @@ class Staff:
         self.firstName = firstName
         self.lastName = lastName
         self.email = email
-        self.password = password
         self.contactNumber = contactNumber
         self.address = address
         self.suburb= suburb
@@ -36,16 +35,17 @@ class StaffModel:
         pass
 
     def __convertStaffRow(self, row: List[Any]):
-        return Staff(row[0], row[1], row[2], row[3],
-                     row[4], row[5], row[6], row[7],
+        return Staff(row[0], row[1], row[2],
+                     row[3], row[5], row[6], row[7],
                      row[8], row[9], row[10], row[11])
 
     def createStaffMember(self,
                  firstName, lastName,
-                 email, password, contactNumber,
+                 email, contactNumber,
                  address, suburb,
                  postcode, state,
                  dob, isManager):
+        password = "password"  # TODO: Randomly generate password
 
         cursor = self._dbConn.cursor()
         cursor.execute(
@@ -66,7 +66,7 @@ class StaffModel:
 
         staffID = cursor.lastrowid
         return Staff(staffID, firstName, lastName,
-                 email, password, contactNumber,
+                 email, contactNumber,
                  address, suburb,
                  postcode, state,
                  dob, isManager)
@@ -109,22 +109,20 @@ class StaffModel:
         # TODO: better way of doing this?
         cursor.execute(
             """UPDATE Staff
-                SET firstName = ?
-                SET lastName = ?
-                SET email = ?
-                SET password = ?
-                SET contactNumber = ?
-                SET address = ?
-                SET suburb = ?
-                SET postcode = ?
-                SET state = ?
-                SET dob = ?
-                SET isManager = ?
+                SET firstName = ?,
+                lastName = ?,
+                email = ?,
+                contactNumber = ?,
+                address = ?,
+                suburb = ?,
+                postcode = ?,
+                state = ?,
+                dob = ?,
+                isManager = ?
                WHERE staffID = ?
             """
             , (staffMember.firstName, staffMember.lastName,
-                 staffMember.email, staffMember.password,
-                 staffMember.contactNumber,
+                 staffMember.email, staffMember.contactNumber,
                  staffMember.address, staffMember.suburb,
                  staffMember.postcode, staffMember.state,
                  staffMember.dob, staffMember.isManager,
