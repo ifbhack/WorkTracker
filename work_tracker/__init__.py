@@ -2,7 +2,7 @@ import os
 from flask import Flask, redirect, url_for, g, render_template, request
 from work_tracker.models import StaffModel
 
-def create_app(test_config=None):
+def createApp(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY='dev',
@@ -10,11 +10,11 @@ def create_app(test_config=None):
     )
 
     from . import db
-    db.prepare_app_callbacks(app)
+    db.prepareAppCallbacks(app)
 
 
-    from .controllers import staff_bp
-    app.register_blueprint(staff_bp)
+    from .controllers import staffBP
+    app.register_blueprint(staffBP)
 
     if test_config is None:
         app.config.from_pyfile('config.py', silent=True)
@@ -27,9 +27,9 @@ def create_app(test_config=None):
         pass
 
     @app.before_request
-    def create_models():
-        db_conn = db.get_database()
-        g.staffModel = StaffModel(db_conn)
+    def createModels():
+        dbConn = db.getDatabase()
+        g.staffModel = StaffModel(dbConn)
         # TODO: setup user sessions here
 
     @app.route("/")

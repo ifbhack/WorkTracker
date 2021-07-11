@@ -1,1 +1,1 @@
-from work_tracker.controllers.staff import bp as staff_bp
+from work_tracker.controllers.staff import bp as staffBP

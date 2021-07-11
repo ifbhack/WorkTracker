@@ -21,11 +21,11 @@ class Staff:
         self.isManager = isManager
 
 class StaffModel:
-    _db_conn: sqlite3.Connection
+    _dbConn: sqlite3.Connection
 
 
-    def __init__(self, db_conn):
-        self._db_conn = db_conn
+    def __init__(self, dbConn):
+        self._dbConn = dbConn
 
     def signIn(self):
         """Sets the session userid
@@ -34,7 +34,7 @@ class StaffModel:
         Returns False if the credentials are invalid"""
         pass
 
-    def __convert_staff_row(self, row: List[Any]):
+    def __convertStaffRow(self, row: List[Any]):
         return Staff(row[0], row[1], row[2], row[3],
                      row[4], row[5], row[6], row[7],
                      row[8], row[9], row[10])
@@ -46,7 +46,7 @@ class StaffModel:
                  postcode, state,
                  dob, isManager):
 
-        cursor = self._db_conn.cursor()
+        cursor = self._dbConn.cursor()
         cursor.execute(
             """INSERT INTO Staff (staffID,
                  firstName, lastName,
@@ -61,7 +61,7 @@ class StaffModel:
                  dob, isManager)
         )
 
-        self._db_conn.commit()
+        self._dbConn.commit()
 
         return Staff(staffID, firstName, lastName,
                  email, contactNumber,
@@ -74,7 +74,7 @@ class StaffModel:
 
         Returns False if no staff infomation is found"""
 
-        cursor = self._db_conn.cursor()
+        cursor = self._dbConn.cursor()
         cursor.execute(
             "SELECT * FROM staff WHERE staffID = ?", (staffID,)
         )
@@ -83,11 +83,11 @@ class StaffModel:
         if row == None:
             raise Exception(f"ticket with staffID: {staffID} not found")
 
-        return self.__convert_staff_row(row)
+        return self.__convertStaffRow(row)
 
     def getStaffMembers(self):
 
-        cursor = self._db_conn.cursor()
+        cursor = self._dbConn.cursor()
         cursor.execute(
             "SELECT * FROM staff"
         )
@@ -98,12 +98,12 @@ class StaffModel:
 
         staffMembers = []
         for row in rows:
-            staffMembers.append(self.__convert_staff_row(row))
+            staffMembers.append(self.__convertStaffRow(row))
 
         return staffMembers
 
     def updateStaffMember(self, staffMember: Staff):
-        cursor = self._db_conn.cursor()
+        cursor = self._dbConn.cursor()
         # TODO: better way of doing this?
         cursor.execute(
             """UPDATE Staff
@@ -127,4 +127,4 @@ class StaffModel:
                  staffMember.staffID)
         )
 
-        self._db_conn.commit()
+        self._dbConn.commit()

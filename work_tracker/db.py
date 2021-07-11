@@ -6,20 +6,20 @@ from flask.cli import with_appcontext
 SCHEMA_FILENAME = "schema.sql"
 TEST_DATA_FILENAME = "test_data.sql"
 
-def get_test_database() -> sqlite3.Connection:
-    """get_test_database for unit testing the model classes"""
-    db_conn = sqlite3.connect(
+def getTestDatabase() -> sqlite3.Connection:
+    """getTestDatabase for unit testing the model classes"""
+    dbConn = sqlite3.connect(
             ":memory:",
             detect_types=sqlite3.PARSE_DECLTYPES
     )
 
-    with open("work_tracker/schema.sql") as schema_file:
-        db_conn.executescript(schema_file.read())
+    with open("work_tracker/schema.sql") as schemaFile:
+        dbConn.executescript(schemaFile.read())
 
-    return db_conn
+    return dbConn
 
-def get_database() -> sqlite3.Connection:
-    """get_database connection and load it into the flask application"""
+def getDatabase() -> sqlite3.Connection:
+    """getDatabase connection and load it into the flask application"""
 
     if 'db' not in g:
         g.db = sqlite3.connect(
@@ -30,34 +30,34 @@ def get_database() -> sqlite3.Connection:
 
     return g.db
 
-def initialise_database():
-    """initialise_database via schema file"""
+def initialiseDatabase():
+    """initialiseDatabase via schema file"""
 
-    db_conn: sqlite3.Connection = get_database()
+    dbConn: sqlite3.Connection = getDatabase()
 
-    with current_app.open_resource(SCHEMA_FILENAME) as schema_file:
-        db_conn.executescript(schema_file.read().decode("utf8"))
+    with current_app.open_resource(SCHEMA_FILENAME) as schemaFile:
+        dbConn.executescript(schemaFile.read().decode("utf8"))
 
-    with current_app.open_resource(TEST_DATA_FILENAME) as schema_file:
-        db_conn.executescript(schema_file.read().decode("utf8"))
+    with current_app.open_resource(TEST_DATA_FILENAME) as schemaFile:
+        dbConn.executescript(schemaFile.read().decode("utf8"))
 
 @click.command('init-db')
 @with_appcontext
-def initialise_database_cmd():
-    """initialise_database_cmd is a click command, call initialise_database instead"""
+def initialiseDatabaseCmd():
+    """initialiseDatabase_cmd is a click command, call initialise_database instead"""
 
-    initialise_database()
+    initialiseDatabase()
     click.echo("database has been initialised")
 
-def close_database(err=None):
+def closeDatabase(err=None):
     db = g.pop('db', None)
 
     if db is not None:
         db.close()
 
-def prepare_app_callbacks(app: Flask):
-    """prepare_app_callbacks to be called on certain events within flask"""
+def prepareAppCallbacks(app: Flask):
+    """prepareAppCallbacks to be called on certain events within flask"""
 
     # TODO: look into teardown_appcontext error handling
-    app.teardown_appcontext(close_database)
-    app.cli.add_command(initialise_database_cmd)
+    app.teardown_appcontext(closeDatabase)
+    app.cli.add_command(initialiseDatabaseCmd)
