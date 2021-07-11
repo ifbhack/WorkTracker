@@ -64,11 +64,16 @@
     
                     <label class="form-label" style="text-align: left;" for="password">Password</label>
                     <input class="form-input" type="password" name="password" placeholder="Password" required>
-    
+                    {% if failed %}
+                        <!-- TODO: Pretty the failed status -->
+                        Failed
+                    {% endif %}
+
                     <br /> 
                     <button class="btn" type="submit" style="text-align: left; float: left; padding-bottom: 5%;">Sign in</button>
                 </form>
-                <br /> 
+                <br />
+                
             </div>
 
             <span class="helper">Help</span>    <span class="helper">Contact us</span>

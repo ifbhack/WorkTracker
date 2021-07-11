@@ -21,20 +21,22 @@
         <div class="container grid-xl">
             <header class="navbar">
                 <section class="navbar-section">
-                    <a href="..." class="navbar-brand mr-2">Work Tracker</a>
-                    <a href="..." class="btn btn-link">Home</a>
+                    <a href="{{ url_for('staff.homepage') }}" class="navbar-brand mr-2">Work Tracker</a>
+                    <a href="{{ url_for('staff.homepage') }}" class="btn btn-link">Home</a>
                     <a href="..." class="btn btn-link">Roster</a>
                     <a href="..." class="btn btn-link">Availability</a>
 
-                    {% if g.user.isManager == 1 %}
+                    {% if g.user.isManager %}
                         <a href="..." class="btn btn-link">Payroll Query</a>
+                        <a href="{{ url_for('staff.view_employees') }}" class="btn btn-link">View Employees</a>
                     {% endif %}
 
                     <a href="..." class="btn btn-link">Queries</a>
+                    <a href="{{ url_for('signOut') }}" class="btn btn-link">Sign Out</a>
                 </section>
                 <section class="navbar-section">
                     <div class="input-group input-inline">
-                        <a href="..." class="btn btn-link">Welcome {{name}}</a>
+                        <a href="{{ url_for('staff.edit') }}" class="btn btn-link">Welcome {{ g.user.firstName }}</a>
                     </div>
                 </section>
             </header>

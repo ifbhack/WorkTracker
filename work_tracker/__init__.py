@@ -35,30 +35,33 @@ def create_app(test_config=None):
         if staffID:
             # TODO: Handle exception
             g.user = g.staffModel.getStaffMember(staffID)
+        else:
+            g.user = None
 
     @app.route("/", methods=["GET", "POST"])
     def signIn():
         # TODO: check if user is already signed in
-        if request.method == 'POST':
-            # TODO: sign user in, here we can check if a staff
-            # member is a manager and redirect them to the appropriate blueprint
-            # return render_template('index-home.html', name=g.user.name, isManager=g.user.isManager)
-
-            vaildCredentials = g.staffModel.signIn(
-                request.form['staffid'], request.form['password'])
-            if vaildCredentials:
-                session['staffID'] = request.form['staffid']
-                return redirect(url_for('staff.homepage'))
-            else:
-                return "Login Failed"
-
+        if g.user:
+            # Already signed in
+            return redirect(url_for('staff.homepage'))
         else:
-            return render_template('index-signIn.html')
+            if request.method == 'POST':
+                vaildCredentials = g.staffModel.signIn(
+                    request.form['staffid'], request.form['password'])
+                if vaildCredentials:
+                    session['staffID'] = request.form['staffid']
+                    return redirect(url_for('staff.homepage'))
+                else:
+                    failed = True
+            else:
+                failed = False
+
+            return render_template('index-signIn.html', failed=failed)
 
     # Temp signout feature for debugging
     @app.route("/signout")
     def signOut():
         session['staffID'] = None
-        return "signed out"
+        return redirect(url_for('signIn'))
 
     return app
