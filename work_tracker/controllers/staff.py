@@ -65,6 +65,25 @@ def edit():
     return render_template('index-edit-employee.html', staffMember=staffMember)
 
 
-@bp.route("/calendar", methods=["GET"])
-def calendar():
+# NOTE: For both availability and add_roster backends,
+# request data is a array containing:
+# dayName - can be Mon, Tues, Wed, Thurs, Fri, Sat, Sun
+
+# startTime and endTime - value ranging from 0 - 8
+# 0 represents 9am, 8 represents 5pm
+
+
+@bp.route("/availability", methods=["GET", "POST"])
+def availability():
+    if request.method == "POST":
+        # backend
+        print(request.get_json())
+    return render_template('index-calendar.html')
+
+
+@bp.route("/add_roster", methods=["GET", "POST"])
+def addRoster():
+    if request.method == "POST":
+        # backend
+        print(request.get_json())
     return render_template('index-calendar.html')

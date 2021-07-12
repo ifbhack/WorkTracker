@@ -4,44 +4,176 @@
 
 {% block content %}
 
-{% set times = ['9am', '10am', '11am', '12am', '1pm', '2pm', '3pm', '4pm', '5pm'] %}
-
-<div class="columns col-gapless">
-    <div class="column col-1"></div>
-    {% for time in times %}
-    <div class="column col-1">{{ time }}</div>
-    {% endfor %}
-</div>
-
-{% for day in ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'] %}
-<div class="columns col-gapless">
-    <div class="column col-1">{{ day }}</div>
-    {% for time in range(times|length - 1) %}
-    <div class="bg-gray column col-1">
-        <button class="btn btn-link" onClick="console.log('test')">+</button>
-    </div>
-    {% endfor %}
-</div>
-{% endfor %}
-
 <script>
     class Week {
         static times = ['9am', '10am', '11am', '12am', '1pm', '2pm', '3pm', '4pm', '5pm']
         static days = ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun']
 
         constructor() {
-            this.recordedTimes = []
+            const content = document.getElementById("content")
+
+            // Times
+            const columnsDiv = document.createElement("div")
+            columnsDiv.className = "columns col-gapless"
+            content.appendChild(columnsDiv)
+            // Empty column
+            const emptyColumn = document.createElement("div")
+            emptyColumn.className = "column col-1"
+            columnsDiv.appendChild(emptyColumn)
+            // Time columns
+            for(const time of Week.times) {
+                const column = document.createElement("div")
+                column.className = "column col-1"
+                const text = document.createTextNode(time)
+                column.appendChild(text)
+                columnsDiv.appendChild(column)
+            }
+
+            // Fill out times
+            this.days = []
             for(const day of Week.days) {
-                this.recordedTimes[day] = []
-                for (const time of Week.times) {
-                    this.recordedTimes[day][time] = false
+                this.days.push(new Day(content, day))
+            }
+        }
+
+        get slots() {
+
+        }
+    }
+
+    class Day {
+        constructor(parent, dayName) {
+            this.hasBlock = false
+            this.startTime = null
+            this.endTime = null
+            this.name = dayName
+            // Create row
+            const columnsDiv = document.createElement("div")
+            columnsDiv.className = "columns col-gapless"
+            parent.appendChild(columnsDiv)
+            // Fill out day
+            const dayColumn = document.createElement("div")
+            dayColumn.className = "column col-1"
+            const text = document.createTextNode(dayName)
+            dayColumn.appendChild(text)
+            columnsDiv.appendChild(dayColumn)
+
+            this.slots = []
+            for (let i = 0; i < Week.times.length - 1; i++) {
+                this.slots[i] = new Slot(columnsDiv, this, parseInt(i))
+            }
+        }
+
+        createSlot(startTime, hours) {
+            this.startTime = startTime
+            this.endTime = startTime + hours - 1  // eheheh, its a hack
+
+            this.slots[startTime].activate()
+        }
+
+        handleClick(time) {
+            // this code is shocking
+            if (!this.hasBlock) {
+                this.createSlot(time, 1)
+                this.hasBlock = true
+            } else if (time >= this.startTime && time <= this.endTime) {
+                // Decrease time
+                if (this.startTime == this.endTime) {
+                    const slot = this.slots[time]
+                    slot.deactivate()
+                    this.hasBlock = false
+                } else if ((time - this.startTime) <= (this.endTime - time)) {
+                    // Shrink start time
+                    for(let i = time; i >= this.startTime; i--) {
+                        const slot = this.slots[i]
+                        slot.deactivate()
+                    }
+                    this.startTime = time + 1  // shrink to next slot, this is some real sketchy stuff
+                } else {
+                    // Shrink end time
+                    for(let i = this.endTime; i >= time; i--) {
+                        const slot = this.slots[i]
+                        slot.deactivate()
+                    }
+                    this.endTime = time - 1  // shrink to previous slot
+                }
+            } else {
+                // Extend time
+                if (time < this.startTime) {
+                    for(let i = time; i < this.startTime; i++) {
+                        const slot = this.slots[i]
+                        slot.activate()
+                    }
+                    this.startTime = time
+                } else {
+                    for(let i = time; i > this.endTime; i--) {
+                        const slot = this.slots[i]
+                        slot.activate()
+                    }
+                    this.endTime = time
                 }
             }
         }
     }
 
+    class Slot {
+        constructor(parent, day, time) {
+            this.active = false
+            // 1 hour block
+            const recordColumn = document.createElement("div")
+            recordColumn.className = "column col-1"
+            parent.appendChild(recordColumn)
+            // Button
+            const button = document.createElement("button")
+            button.className = "btn btn-link"
+            button.onclick = () => day.handleClick(time)
+            const text = document.createTextNode('+')
+            button.appendChild(text)
+            recordColumn.appendChild(button)
+            // Save
+            this.element = recordColumn
+        }
+
+        activate() {
+            this.active = true
+            const slotElement = this.element
+            slotElement.firstChild.innerText = "-"
+            slotElement.style.backgroundColor = "powderblue"
+        }
+
+        deactivate() {
+            this.active = false
+            const slotElement = this.element
+            slotElement.firstChild.innerText = "+"
+            slotElement.style.backgroundColor = null
+        }
+    }
+
     const week = new Week()
-    console.log(week.recordedTimes)
+    console.log(week)
+
+    function send() {
+        let blocks = []
+        week.days.forEach((day) => {
+            if (day.hasBlock) {
+                console.log("test")
+                blocks.push({
+                    dayName: day.name,
+                    startTime: day.startTime,
+                    endTime: day.endTime + 1  // uhhhhh, makes it make more sense? reeeee
+                })
+            }
+        })
+        console.log(blocks)
+        var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
+        xmlhttp.open("POST", "{{ url_for(request.endpoint) }}");
+        xmlhttp.setRequestHeader("Content-Type", "application/json");
+        xmlhttp.send(JSON.stringify(blocks));
+        
+    }
 </script>
+
+<button class="btn btn-success" onClick="send()">Submit</button>
+
 
 {% endblock %}
