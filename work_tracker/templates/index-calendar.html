@@ -166,7 +166,7 @@
         })
         console.log(blocks)
         var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
-        xmlhttp.open("POST", "{{ url_for(request.endpoint) }}");
+        xmlhttp.open("POST", "{{ request.url }}");
         xmlhttp.setRequestHeader("Content-Type", "application/json");
         xmlhttp.send(JSON.stringify(blocks));
         

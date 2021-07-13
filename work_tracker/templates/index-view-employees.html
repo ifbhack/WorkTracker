@@ -59,6 +59,10 @@
             <input type="hidden" name="staffID" value="{{ staffMember.staffID }}">
             <button class="btn" type="submit">Edit</button>
           </form>
+          <form action="{{ url_for('staff.addRoster') }}">
+            <input type="hidden" name="staffID" value="{{ staffMember.staffID }}">
+            <button class="btn" type="submit">Add Roster</button>
+          </form>
         </th>
       </tr>
     {% endfor %}
