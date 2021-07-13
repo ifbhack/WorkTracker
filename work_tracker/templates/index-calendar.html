@@ -64,11 +64,13 @@
             }
         }
 
-        createSlot(startTime, hours) {
+        createSlot(startTime, duration) {
             this.startTime = startTime
-            this.endTime = startTime + hours - 1  // eheheh, its a hack
+            this.endTime = startTime + duration - 1  // eheheh, its a hack
 
-            this.slots[startTime].activate()
+            for (let i = startTime; i <= this.endTime; i++) {
+                this.slots[i].activate()
+            }
         }
 
         handleClick(time) {
@@ -149,27 +151,54 @@
         }
     }
 
+    // Build the cool time thing
     const week = new Week()
-    console.log(week)
+    // Insert existing data
+    const existingData = {{ existingData|tojson }}
+    existingData.forEach((day) => {
+        // quite the hack
+        switch (day.dayName) {
+            case "Mon":
+                dayName = 0
+                break
+            case "Tues":
+                dayName = 1
+                break
+            case "Wed":
+                dayName = 2
+                break
+            case "Thurs":
+                dayName = 3
+                break
+            case "Fri":
+                dayName = 4
+                break
+            case "Sat":
+                dayName = 5
+                break
+            case "Sun":
+                dayName = 6
+                break
+        }
+
+        week.days[dayName].createSlot(day.startTime, day.duration)
+    })
 
     function send() {
         let blocks = []
         week.days.forEach((day) => {
             if (day.hasBlock) {
-                console.log("test")
                 blocks.push({
                     dayName: day.name,
                     startTime: day.startTime,
-                    endTime: day.endTime + 1  // uhhhhh, makes it make more sense? reeeee
+                    duration: day.endTime - day.startTime + 1
                 })
             }
         })
-        console.log(blocks)
         var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
         xmlhttp.open("POST", "{{ request.url }}");
         xmlhttp.setRequestHeader("Content-Type", "application/json");
         xmlhttp.send(JSON.stringify(blocks));
-        
     }
 </script>
 

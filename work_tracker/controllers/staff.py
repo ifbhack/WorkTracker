@@ -78,7 +78,8 @@ def availability():
     if request.method == "POST":
         # backend
         print(request.get_json())
-    return render_template('index-calendar.html')
+    existingData = [{'dayName': 'Sat', 'startTime': 0, 'duration': 4}, {'dayName': 'Sun', 'startTime': 0, 'duration': 3}]
+    return render_template('index-calendar.html', existingData=existingData)
 
 
 @bp.route("/add_roster", methods=["GET", "POST"])
@@ -86,4 +87,6 @@ def addRoster():
     if request.method == "POST":
         # backend
         print(request.get_json())
-    return render_template('index-calendar.html')
+        print(request.args.get("staffID"))
+    existingData = [{'dayName': 'Sat', 'startTime': 0, 'duration': 4}, {'dayName': 'Sun', 'startTime': 0, 'duration': 1}]
+    return render_template('index-calendar.html', existingData=existingData)
