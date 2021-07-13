@@ -27,7 +27,7 @@
                     <a href="{{ url_for('staff.availability') }}" class="btn btn-link">Availability</a>
 
                     {% if g.user.isManager %}
-                        <a href="..." class="btn btn-link">Payroll Query</a>
+                        <a href="{{ url_for('staff.payrollQuery') }}" class="btn btn-link">Payroll Query</a>
                         <a href="{{ url_for('staff.view_employees') }}" class="btn btn-link">View Employees</a>
                     {% endif %}
 

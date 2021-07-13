@@ -31,18 +31,53 @@
 
             // Fill out times
             this.days = []
-            for(const day of Week.days) {
-                this.days.push(new Day(content, day))
+            for(const dayName of Week.days) {
+                this.days.push(new Day(content, this, dayName))
             }
         }
 
-        get slots() {
-
+        updateChanges() {
+            const tableBody = document.getElementById("changes")
+            tableBody.textContent = ''  // clear table
+            this.days.forEach((day) => {
+                const existingDay = existingData.find((existingDay) => existingDay.dayName == day.name)
+                if (day.hasBlock || existingDay) {
+                    // row
+                    const row = document.createElement("tr")
+                    tableBody.appendChild(row)
+                    // date
+                    const date = document.createElement("td")
+                    date.textContent = day.name
+                    row.appendChild(date)
+                    // original time
+                    
+                    const originalTime = document.createElement("td")
+                    if (existingDay) {
+                        originalTime.textContent = Week.times[existingDay.startTime] + ' - ' + Week.times[existingDay.startTime + existingDay.duration]
+                        
+                    }
+                    row.appendChild(originalTime)
+                    // new time
+                    const newTime = document.createElement("td")
+                    if (day.hasBlock) {
+                        newTime.textContent = Week.times[day.startTime] + ' - ' + Week.times[day.endTime + 1]
+                    } else {
+                        newTime.textContent = 'Removed'
+                    }
+                    row.appendChild(newTime)
+                    
+                    // difference
+                    const difference = document.createElement("td")
+                    difference.textContent = (day.endTime - day.startTime + 1) - existingDay.duration
+                    row.appendChild(difference)
+                }
+            })
         }
     }
 
     class Day {
-        constructor(parent, dayName) {
+        constructor(parent, week, dayName) {
+            this.week = week
             this.hasBlock = false
             this.startTime = null
             this.endTime = null
@@ -67,6 +102,7 @@
         createSlot(startTime, duration) {
             this.startTime = startTime
             this.endTime = startTime + duration - 1  // eheheh, its a hack
+            this.hasBlock = true
 
             for (let i = startTime; i <= this.endTime; i++) {
                 this.slots[i].activate()
@@ -77,7 +113,6 @@
             // this code is shocking
             if (!this.hasBlock) {
                 this.createSlot(time, 1)
-                this.hasBlock = true
             } else if (time >= this.startTime && time <= this.endTime) {
                 // Decrease time
                 if (this.startTime == this.endTime) {
@@ -115,6 +150,10 @@
                     this.endTime = time
                 }
             }
+
+            {% if showChanges %}
+                this.week.updateChanges()
+            {% endif %}
         }
     }
 
@@ -184,6 +223,13 @@
         week.days[dayName].createSlot(day.startTime, day.duration)
     })
 
+    // Update changes on page load
+    {% if showChanges %}
+        document.addEventListener('DOMContentLoaded', function() {
+            week.updateChanges()
+        })
+    {% endif %}
+
     function send() {
         let blocks = []
         week.days.forEach((day) => {
@@ -202,7 +248,21 @@
     }
 </script>
 
+{% if showChanges %}
+    Changes:
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Original Time</th>
+            <th>New Time</th>
+            <th>Difference</th>
+        </tr>
+        </thead>
+        <tbody id="changes">
+        </tbody>
+    </table>
+{% endif %}
 <button class="btn btn-success" onClick="send()">Submit</button>
-
 
 {% endblock %}

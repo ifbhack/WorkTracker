@@ -90,3 +90,13 @@ def addRoster():
         print(request.args.get("staffID"))
     existingData = [{'dayName': 'Sat', 'startTime': 0, 'duration': 4}, {'dayName': 'Sun', 'startTime': 0, 'duration': 1}]
     return render_template('index-calendar.html', existingData=existingData)
+
+
+@bp.route("/payroll_query", methods=["GET", "POST"])
+def payrollQuery():
+    if request.method == "POST":
+        # backend
+        print(request.get_json())
+        print(request.args.get("staffID"))
+    existingData = [{'dayName': 'Sat', 'startTime': 3, 'duration': 4}, {'dayName': 'Sun', 'startTime': 0, 'duration': 1}]
+    return render_template('index-calendar.html', existingData=existingData, showChanges=True)
