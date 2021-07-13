@@ -79,7 +79,7 @@ def availability():
         # backend
         print(request.get_json())
     existingData = [{'dayName': 'Sat', 'startTime': 0, 'duration': 4}, {'dayName': 'Sun', 'startTime': 0, 'duration': 3}]
-    return render_template('index-calendar.html', existingData=existingData)
+    return render_template('index-calendar.html', existingData=existingData, editable=True)
 
 
 @bp.route("/add_roster", methods=["GET", "POST"])
@@ -89,7 +89,7 @@ def addRoster():
         print(request.get_json())
         print(request.args.get("staffID"))
     existingData = [{'dayName': 'Sat', 'startTime': 0, 'duration': 4}, {'dayName': 'Sun', 'startTime': 0, 'duration': 1}]
-    return render_template('index-calendar.html', existingData=existingData)
+    return render_template('index-calendar.html', existingData=existingData, editable=True)
 
 
 @bp.route("/payroll_query", methods=["GET", "POST"])
@@ -99,4 +99,28 @@ def payrollQuery():
         print(request.get_json())
         print(request.args.get("staffID"))
     existingData = [{'dayName': 'Sat', 'startTime': 3, 'duration': 4}, {'dayName': 'Sun', 'startTime': 0, 'duration': 1}]
+    return render_template('index-calendar.html', existingData=existingData, showChanges=True, editable=True)
+
+
+@bp.route("/roster", methods=["GET", "POST"])
+def roster():
+    if request.method == "POST":
+        # backend
+        print(request.get_json())
+        print(request.args.get("staffID"))
+    existingData = [{'dayName': 'Sat', 'startTime': 3, 'duration': 4}, {'dayName': 'Sun', 'startTime': 0, 'duration': 1}]
+    return render_template('index-calendar.html', existingData=existingData)
+
+
+@bp.route("/view_query", methods=["GET", "POST"])
+def viewQuery():
+    if request.method == "POST":
+        # backend
+        print(request.get_json())
+        print(request.args.get("staffID"))
+    existingData = [{'dayName': 'Sat', 'startTime': 3, 'duration': 4}, {'dayName': 'Sun', 'startTime': 0, 'duration': 1}]
     return render_template('index-calendar.html', existingData=existingData, showChanges=True)
+
+@bp.route("/manager_query_list", methods=["GET", "POST"])
+def managerQueryList():
+    return render_template('index-manager-query-list.html')

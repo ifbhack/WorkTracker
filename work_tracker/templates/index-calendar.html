@@ -165,12 +165,14 @@
             recordColumn.className = "column col-1"
             parent.appendChild(recordColumn)
             // Button
+            {% if editable %}
             const button = document.createElement("button")
             button.className = "btn btn-link"
             button.onclick = () => day.handleClick(time)
             const text = document.createTextNode('+')
             button.appendChild(text)
             recordColumn.appendChild(button)
+            {% endif %}
             // Save
             this.element = recordColumn
         }
@@ -178,7 +180,9 @@
         activate() {
             this.active = true
             const slotElement = this.element
+            {% if editable %}
             slotElement.firstChild.innerText = "-"
+            {% endif %}
             slotElement.style.backgroundColor = "powderblue"
         }
 
