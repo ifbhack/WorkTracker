@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, g
+from datetime import datetime
 
 bp = Blueprint("staff", __name__, url_prefix="/staff")
 
@@ -127,11 +128,12 @@ def addRoster():
 @bp.route("/payroll_query", methods=["GET", "POST"])
 def payrollQuery():
     if request.method == "POST":
-        # backend
-        print(request.get_json())
-        print(request.args.get("staffID"))
-    existingData = [{'dayName': 'Sat', 'startTime': 3, 'duration': 4}, {'dayName': 'Sun', 'startTime': 0, 'duration': 1}]
-    return render_template('index-calendar.html', existingData=existingData, showChanges=True, editable=True, weekDate="12 July - 18 July")
+        day = datetime.strptime("2021-07-05", "%Y-%m-%d")  # a hack
+        week = day.strftime("%W")
+        g.payrollQueryModel.createPayrollQuery(g.user.staffID, week, request.get_json())
+    shifts = g.timesheetModel.getTimesheet(1, "2021-07-05", "2021-07-11")  # hardcoded date for now
+    jsonShifts = g.timesheetModel.shiftsToJson(shifts)
+    return render_template('index-calendar.html', existingData=jsonShifts, showChanges=True, editable=True, weekDate="12 July - 18 July")
 
 
 @bp.route("/roster", methods=["GET", "POST"])
@@ -152,6 +154,7 @@ def viewQuery():
         print(request.args.get("staffID"))
     existingData = [{'dayName': 'Sat', 'startTime': 3, 'duration': 4}, {'dayName': 'Sun', 'startTime': 0, 'duration': 1}]
     return render_template('index-calendar.html', existingData=existingData, showChanges=True, weekDate="12 July - 18 July")
+
 
 @bp.route("/manager_query_list", methods=["GET", "POST"])
 def managerQueryList():

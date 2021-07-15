@@ -41,8 +41,8 @@ CREATE TABLE IF NOT EXISTS "Payroll_Query" (
 	"staffID"	INTEGER NOT NULL,
 	"date"	TEXT NOT NULL,
 	"status"	INTEGER NOT NULL,
-	FOREIGN KEY("staffID") REFERENCES "Staff"("staffID"),
-	PRIMARY KEY("payrollID" AUTOINCREMENT)
+	PRIMARY KEY("payrollID" AUTOINCREMENT),
+	FOREIGN KEY("staffID") REFERENCES "Staff"("staffID")
 );
 
 CREATE TABLE IF NOT EXISTS "Payroll_Query_Details" (
@@ -50,4 +50,12 @@ CREATE TABLE IF NOT EXISTS "Payroll_Query_Details" (
 	"startTime"	INTEGER NOT NULL,
 	"duration"	INTEGER NOT NULL,
 	FOREIGN KEY("payrollID") REFERENCES "Payroll_Query"("staffID")
+);
+
+CREATE TABLE IF NOT EXISTS "Timesheet" (
+	"staffID"	INTEGER NOT NULL,
+	"startTime"	TEXT NOT NULL,
+	"duration"	INTEGER NOT NULL,
+	PRIMARY KEY("staffID","startTime"),
+	FOREIGN KEY("staffID") REFERENCES "Staff"("staffID")
 );
