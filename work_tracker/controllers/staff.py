@@ -9,9 +9,41 @@ def homepage():
     return render_template('index.html')
 
 
-@bp.route("/view_employees", methods=["GET"])
+@bp.route("/view_employees", methods=["GET", "POST"])
 def view_employees():
+
     # TODO: add try/catch, for now fail hard
+    if request.method == "POST":
+
+        filter = request.form.get("filter")
+        query = request.form["search"]
+
+        staffMembers = []
+
+        # NOTE: queue the big ugly
+        if filter == "id":
+            staffMembers.append(g.staffModel.getStaffMember(query))
+        elif filter == "name":
+            staffMembers = g.staffModel.getStaffMembersByName(query)
+        elif filter == "email":
+            staffMembers = g.staffModel.getStaffMembersByEmail(query)
+        elif filter == "contactNumber":
+            staffMembers = g.staffModel.getStaffMembersByContactNumber(query)
+        elif filter == "address":
+            staffMembers = g.staffModel.getStaffMembersByAddress(query)
+        elif filter == "suburb":
+            staffMembers = g.staffModel.getStaffMembersBySuburb(query)
+        elif filter == "postcode":
+            staffMembers = g.staffModel.getStaffMembersByPostcode(query)
+        elif filter == "state":
+            staffMembers = g.staffModel.getStaffMembersByState(query)
+        elif filter == "dob":
+            staffMembers = g.staffModel.getStaffMembersByDOB(query)
+        elif filter == "level":
+            staffMembers = g.staffModel.getStaffMembersByLevel(query)
+
+        return render_template('index-view-employees.html', staffMembers=staffMembers)
+
     staffMembers = g.staffModel.getStaffMembers()
 
     return render_template('index-view-employees.html', staffMembers=staffMembers)

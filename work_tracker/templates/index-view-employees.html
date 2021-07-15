@@ -7,7 +7,7 @@
 <br>
 <div class="columns">
     <div class="column col-6">
-        <form class="form-horizontal">
+        <form method="POST" class="form-horizontal">
             <div class="form-group">
               <div class="col-1 col-sm-12">
                 <label class="form-label" for="search">Search</label>
@@ -22,17 +22,16 @@
               </div>
               <div class="col-3 col-sm-12">
                 <select class="form-select" name="filter" id="search">
-                  <option>ID</option>
-                  <option>First Name</option>
-                  <option>Last Name</option>
-                  <option>Email</option>
-                  <option>Contact Number</option>
-                  <option>Address</option>
-                  <option>Suburb</option>
-                  <option>Postcode</option>
-                  <option>State</option>
-                  <option>DOB</option>
-                  <option>Employee Level</option>
+                  <option value="id">ID</option>
+                  <option value="name">Name</option>
+                  <option value="email">Email</option>
+                  <option value="contactNumber">Contact Number</option>
+                  <option value="address">Address</option>
+                  <option value="suburb">Suburb</option>
+                  <option value="postcode">Postcode</option>
+                  <option value="state">State</option>
+                  <option value="dob">DOB</option>
+                  <option value="level">Employee Level</option>
                 </select>
               </div>
             </div>

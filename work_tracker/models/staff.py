@@ -46,9 +46,10 @@ class StaffModel:
             return False
 
     def __convertStaffRow(self, row: List[Any]):
-        return Staff(row[0], row[1], row[2],
-                     row[3], row[5], row[6], row[7],
-                     row[8], row[9], row[10], row[11])
+            return Staff(row[0], row[1], row[2],
+                         row[3], row[5], row[6],
+                         row[7], row[8], row[9],
+                         row[10], row[11])
 
     def createStaffMember(self,
                  firstName, lastName,
@@ -98,12 +99,15 @@ class StaffModel:
 
         return self.__convertStaffRow(row)
 
-    def getStaffMembers(self):
+    def __getStaffMembers(self, sqlCondition, params):
+
+        if sqlCondition == "":
+            query = "SELECT * FROM staff"
+        else:
+            query = f"SELECT * FROM staff WHERE {sqlCondition}"
 
         cursor = self._dbConn.cursor()
-        cursor.execute(
-            "SELECT * FROM staff"
-        )
+        cursor.execute(query, params)
 
         rows = cursor.fetchall()
         if len(rows) == 0:
@@ -114,6 +118,42 @@ class StaffModel:
             staffMembers.append(self.__convertStaffRow(row))
 
         return staffMembers
+
+
+    def getStaffMembers(self):
+        return self.__getStaffMembers("", ())
+
+    def getStaffMembersByName(self, name):
+        # NOTE: sqlite doesn't like "%?%" so we do the madness below.
+
+        return self.__getStaffMembers("firstName LIKE ? OR lastName LIKE ?",
+                                      ('%'+name+'%', '%'+name+'%'))
+
+    # NOTE: below looks a bit ugly, might want to refactor later
+
+    def getStaffMembersByEmail(self, email):
+        return self.__getStaffMembers("email LIKE ?", ('%'+email+'%',))
+
+    def getStaffMembersByContactNumber(self, contactNumber):
+        return self.__getStaffMembers("contactNumber LIKE ?", ('%'+contactNumber+'%',))
+
+    def getStaffMembersByAddress(self, address):
+        return self.__getStaffMembers("address LIKE ?", ('%'+address+'%',))
+
+    def getStaffMembersBySuburb(self, suburb):
+        return self.__getStaffMembers("suburb LIKE ?", ('%'+suburb+'%',))
+
+    def getStaffMembersByPostcode(self, postcode):
+        return self.__getStaffMembers("postcode LIKE ?", ('%'+postcode+'%',))
+
+    def getStaffMembersByState(self, state):
+        return self.__getStaffMembers("state LIKE ?", ('%'+state+'%',))
+
+    def getStaffMembersByDOB(self, dob):
+        return self.__getStaffMembers("dob LIKE ?", ('%'+dob+'%',))
+
+    def getStaffMembersByLevel(self, level):
+        return self.__getStaffMembers("isManager = ?", (level,))
 
     def updateStaffMember(self, staffID,
                  firstName, lastName,
