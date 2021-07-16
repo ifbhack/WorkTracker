@@ -1,4 +1,5 @@
 import os
+from work_tracker.models.roster import RosterModel
 from work_tracker.models.payroll_query import PayrollQueryModel
 from work_tracker.models.timesheet import TimesheetModel
 from flask import Flask, redirect, url_for, g, render_template, request, session
@@ -34,6 +35,7 @@ def create_app(test_config=None):
         g.staffModel = StaffModel(dbConn)
         g.timesheetModel = TimesheetModel(dbConn)
         g.payrollQueryModel = PayrollQueryModel(dbConn)
+        g.rosterModel = RosterModel(dbConn)
 
         staffID = session.get('staffID')
         if staffID:

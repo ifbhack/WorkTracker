@@ -3,6 +3,7 @@ DROP TABLE IF EXISTS "Availability";
 DROP TABLE IF EXISTS "Staff";
 DROP TABLE IF EXISTS "Payroll_Query";
 DROP TABLE IF EXISTS "Payroll_Query_Details";
+DROP TABLE IF EXISTS "Timesheet";
 
 CREATE TABLE IF NOT EXISTS "Roster" (
 	"staffID"	INTEGER NOT NULL,

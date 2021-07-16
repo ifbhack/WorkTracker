@@ -270,6 +270,8 @@
         </tbody>
     </table>
 {% endif %}
+{% if not hideSubmit %}
 <button class="btn btn-success" onClick="send()">Submit</button>
+{% endif %}
 
 {% endblock %}

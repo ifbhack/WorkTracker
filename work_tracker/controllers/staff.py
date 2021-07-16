@@ -142,8 +142,9 @@ def roster():
         # backend
         print(request.get_json())
         print(request.args.get("staffID"))
-    existingData = [{'dayName': 'Sat', 'startTime': 3, 'duration': 4}, {'dayName': 'Sun', 'startTime': 0, 'duration': 1}]
-    return render_template('index-calendar.html', existingData=existingData, weekDate="12 July - 18 July")
+    shifts = g.rosterModel.getRoster(1, "2021-07-05", "2021-07-11")  # hardcoded date for now
+    jsonShifts = g.rosterModel.shiftsToJson(shifts)
+    return render_template('index-calendar.html', existingData=jsonShifts, weekDate="12 July - 18 July", hideSubmit=True)
 
 
 @bp.route("/view_query", methods=["GET", "POST"])
