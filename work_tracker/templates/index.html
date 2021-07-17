@@ -25,9 +25,9 @@
                     <a href="{{ url_for('staff.homepage') }}" class="btn btn-link">Home</a>
                     <a href="{{ url_for('staff.roster') }}" class="btn btn-link">Roster</a>
                     <a href="{{ url_for('staff.availability') }}" class="btn btn-link">Availability</a>
+                    <a href="{{ url_for('staff.payrollQuery') }}" class="btn btn-link">Payroll Query</a>
 
                     {% if g.user.isManager %}
-                        <a href="{{ url_for('staff.payrollQuery') }}" class="btn btn-link">Payroll Query</a>
                         <a href="{{ url_for('staff.view_employees') }}" class="btn btn-link">View Employees</a>
                         <a href="{{ url_for('staff.managerQueryList') }}" class="btn btn-link">Queries</a>
                     {% else %}
