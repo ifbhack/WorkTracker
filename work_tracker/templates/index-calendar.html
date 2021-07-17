@@ -271,7 +271,14 @@
     </table>
 {% endif %}
 {% if not hideSubmit %}
+
+<!-- We have gone to a new low -->
+{% if submitButtonIsApprove %}
+<button class="btn btn-success" onClick="send()">Approve</button>
+{% else %}
 <button class="btn btn-success" onClick="send()">Submit</button>
+{% endif %}
+
 {% endif %}
 
 {% endblock %}

@@ -5,3 +5,6 @@ INSERT INTO Staff VALUES (3, 'Rob', 'Jones', 'rob.jones@email.com', 'password', 
 INSERT INTO Timesheet VALUES (1, '2021-07-08 09:00', 5);
 
 INSERT INTO Roster VALUES (1, '2021-07-08 09:00', 7);
+
+INSERT INTO Payroll_Query VALUES (1, 1, date('now'), 0);
+INSERT INTO Payroll_Query_Details VALUES (1, '2021-07-08 09:00', 4);

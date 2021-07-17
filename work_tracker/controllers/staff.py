@@ -149,12 +149,15 @@ def roster():
 
 @bp.route("/view_query", methods=["GET", "POST"])
 def viewQuery():
-    if request.method == "POST":
-        # backend
-        print(request.get_json())
-        print(request.args.get("staffID"))
-    existingData = [{'dayName': 'Sat', 'startTime': 3, 'duration': 4}, {'dayName': 'Sun', 'startTime': 0, 'duration': 1}]
-    return render_template('index-calendar.html', existingData=existingData, showChanges=True, weekDate="12 July - 18 July")
+    payrollID = request.args.get("payrollID")
+    if payrollID:
+        if request.method == "POST":
+            g.payrollQueryModel.approvePayrollQuery(payrollID)
+        elif request.method == "GET":
+            shifts = g.payrollQueryModel.getPayrollQueryDetails(payrollID)  # hardcoded date for now
+            jsonShifts = g.payrollQueryModel.shiftsToJson(shifts)
+            return render_template('index-calendar.html', existingData=jsonShifts, showChanges=True, weekDate="12 July - 18 July", submitButtonIsApprove=True)
+    return "Need a payrollID"
 
 
 @bp.route("/manager_query_list", methods=["GET", "POST"])
