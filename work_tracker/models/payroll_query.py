@@ -16,7 +16,7 @@ class PayrollQueryModel:
 
     def createPayrollQuery(self, staffID, week, shifts):
         cursor = self._dbConn.cursor()
-        cursor.execute("""INSERT INTO Payroll_Query (staffID, date, status) VALUES (?, 'now', 0)""", (staffID,))
+        cursor.execute("""INSERT INTO Payroll_Query (staffID, date, status) VALUES (?, date('now'), 0)""", (staffID,))
         self._dbConn.commit()
         payrollID = cursor.lastrowid
 
