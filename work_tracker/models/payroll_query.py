@@ -13,7 +13,8 @@ class PayrollQuery:
         self.staffID = staffID
         self.date = date
         self.status = status
-        self.shifts = self.shifts
+        if shifts != None:
+            self.shifts = shifts
 
 
 class PayrollQueryModel:
@@ -36,6 +37,23 @@ class PayrollQueryModel:
             date = datetime.strptime(f"2021 {week} {shift['dayName']} {shift['startTime'] + self.timeOffset}", "%Y %W %a %H")  # bajesus this hack
             cursor.execute("""INSERT INTO Payroll_Query_Details (payrollID, startTime, duration) VALUES (?, ?, ?)""", (payrollID, date, shift['duration']))
         self._dbConn.commit()
+
+    def getPayrollQueriesByStaffID(self, staffID):
+        cursor = self._dbConn.cursor()
+
+        cursor.execute("""
+                SELECT * FROM Payroll_Query WHERE staffID = ?
+                       """, (staffID,))
+
+        rows = cursor.fetchall()
+        if len(rows) == 0:
+            raise Exception("no rows found")
+
+        queries = []
+        for row in rows:
+            queries.append(PayrollQuery(row[0], row[1], row[2], row[3], None))
+
+        return queries
 
     def getPayrollQueryDetails(self, payrollID):
         cursor = self._dbConn.cursor()

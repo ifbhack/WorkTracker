@@ -37,10 +37,9 @@
       <td>
         {% if query.status == 1 %}
           <td>Approved</td>
-        {% else % }
+        {% else %}
       <!-- link to view query page -->
-        <a href="{{ url_for('staff.viewQuery') + '?payrollID=' +
-          query.payrollID }}" class="btn btn-link">Not Approved</a>
+      <a href="{{ url_for('staff.viewQuery', payrollID=query.payrollID) }}" class="btn btn-link">Not Approved</a>
         {% endif %}
       </td>
     </tr>

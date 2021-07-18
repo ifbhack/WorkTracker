@@ -163,3 +163,8 @@ def viewQuery():
 @bp.route("/manager_query_list", methods=["GET", "POST"])
 def managerQueryList():
     return render_template('index-manager-query-list.html')
+
+@bp.route("/query_list", methods=["GET"])
+def queryList():
+    queries = g.payrollQueryModel.getPayrollQueriesByStaffID(g.user.staffID)
+    return render_template("index-employee-query-list.html", queries=queries)

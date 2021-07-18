@@ -42,7 +42,8 @@ def create_app(test_config=None):
             # TODO: Handle exception
             g.user = g.staffModel.getStaffMember(staffID)
         else:
-            g.user = None
+            # NOTE: fallback to test user 1
+            g.user = g.staffModel.getStaffMember(1)
 
     @app.route("/", methods=["GET", "POST"])
     def signIn():
